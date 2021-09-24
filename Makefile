@@ -1,6 +1,6 @@
 
 CC=gcc
-CFLAGS=-W -Wall -ansi -pedantic
+CFLAGS=-Wall
 LDFLAGS=
 EXEC=main
 

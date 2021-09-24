@@ -1,11 +1,27 @@
-
 #include "main.h"
+#include "fonction.h"
+
 
 int main()
 {
-  printf("Hello World");
-  printf("%d \n", ajouterentier(3, 5, 2));
-  printf("Salut à tous les amis \n");
+  srand(time(NULL));
+
+
+  matrice *t = creerMatrice(4, 4);
+  matrice *e = creerMatrice(4, 8);
+
+  remplisAleaBcpZero(t);
+  remplisAleaBcpZero(e);
+
+  afficheMatrice(*t);
+  afficheMatrice(*e);
+
+
+  
+  matrice *s = additionMatrice(*t, *e); 
+
+  afficheMatrice(*s);
+  
 
   return 0;
 }
