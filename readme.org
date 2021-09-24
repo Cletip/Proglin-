@@ -72,6 +72,20 @@ De plus, l'algorithme de Jacobi s'écrit avec une précision \epsilon :
 
 ** Présentation des programmes commentés
 
+
+Pour effectuer ce travail, nous avons décidé de séparer notre programme en plusieurs fichiers : 
+
+1. main.c, qui est notre fichier appelant les divers fonctions présentent dans
+2. fonction.c, puis
+3. fonction.h, permettant de définir les différentes structures et les headers des fonctions, et enfin
+4. main.h, où les différentes bibliothèques sont déclarées
+   
+
+
+
+
+
+
 ** Présentation des matrices test au dos de la feuille
 
 ** Conclusion ssur les méthodes 
