@@ -1,1 +1,4 @@
-* Titre
+* TP1
+** Rappel rapide des méthodes
+*** Méthode de Jacobi
+On pose M
