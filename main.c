@@ -11,7 +11,7 @@ int main()
 
   afficheMatrice(*e);
 
-  matrice *s = additionMatrice(*t, *e);
+  matrice *s = Gauss(*t); 
 
   afficheMatrice(*s);
 

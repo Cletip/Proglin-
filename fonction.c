@@ -75,6 +75,22 @@ void remplisAleaBcpZero(matrice *mat)
   }
 }
 
+void remplisAlea(matrice *mat){
+  for(int i = 0; i < mat->longueur; i++){
+    for(int j = 0; j < mat->largeur; j++){
+      mat->Mat[i][j] = ((long double)rand()/RAND_MAX*2.0-1.0)*100;
+    }
+  }
+}
+
+void remplisAleaInt(matrice *mat){
+  for(int i = 0; i < mat->longueur; i++){
+    for(int j = 0; j < mat->largeur; j++){
+      mat->Mat[i][j] = (long double)((int)(((float)rand()/RAND_MAX*2.0-1.0)*100));
+    }
+  }
+}
+
 matrice *additionMatrice(matrice mat1, matrice mat2)
 {
   // initialisation des variables
@@ -168,4 +184,54 @@ matrice *Jacobi(matrice *A, matrice *B)
     printf("Test\n");
   }
   return x;
+}
+
+
+matrice *Gauss(matrice mat){
+  if(mat.longueur != mat.largeur){
+    printf("On échelonne uniquement des matrices carré...\n");
+    return NULL;
+  }else {
+    long double lambda;
+    int n = mat.largeur;
+    matrice *res = creerMatrice( n, n);
+    for(int i = 0; i < n; i++){
+      for(int j = 0; j < n; j++){
+	res->Mat[i][j] = mat.Mat[i][j];
+      }
+    }
+    afficheMatrice(*res);
+    for(int i = 0; i < n; i++){
+      if(res->Mat[i][i] == 0){
+	for(int j = 0; j < n; j++){
+	  if((res->Mat[j][i] != 0) && (res->Mat[i][j] != 0)){
+	    for(int k = 0; k < n; k++){
+	      lambda = res->Mat[j][k];
+	      res->Mat[j][k] = res->Mat[i][k];
+	      res->Mat[i][k] = lambda;
+	    }
+	    break;
+	  }else if(j == n-1){
+	    printf("Ne marche pas sur cette matrice car la diagonale a forcement au moins 1 zéro...\n");
+	    return res;
+	  }
+	}
+      }
+    }
+    afficheMatrice(*res);
+    for(int i = 0; i < n; i++){
+      for(int j = 0; j < i; j++){
+	lambda = -(res->Mat[i][j]);
+	for(int k = 0; k < n; k++){
+	  res->Mat[i][k] = lambda*res->Mat[j][k] + res->Mat[i][k];
+	}
+      }
+      lambda = res->Mat[i][i];
+      for(int k = 0; k < n; k++){
+	  res->Mat[i][k] = res->Mat[i][k]/lambda;
+	}
+    }
+
+    return res;
+  }
 }
