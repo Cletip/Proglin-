@@ -1,15 +1,24 @@
 /* pour stocker les fcts et les déclarations de structre */
 
-#ifndef TEST
+#ifndef FONCTION_H_
+#define FONCTION_H_
 
-#define TEST
+#include <stdio.h>
+#include <stdlib.h>
 
-struct matrice
+typedef struct matrice
 {
-  int *longueur;
-  int **largeur;
-};
-typedef struct matrice matrice;
-int ajouterentier(int unnombre, int unautrenombre, int dernier);
+  int longueur;
+  int largeur;
+  long double **Mat;
+}matrice;
+
+matrice *creerMatrice(int largeur, int longueur);
+void destroyMatrice(matrice *mat);
+void afficheMatrice(matrice mat);
+void remplisAleaBcpZero(matrice *mat);
+matrice *additionMatrice(matrice mat1, matrice mat2);
+
+
 
 #endif
