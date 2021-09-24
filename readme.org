@@ -1,8 +1,93 @@
-#+Title:TP1
-** Rappel rapide des méthodes
-*** Méthode de Jacobi
-Pour cette méthode, 
-On pose M
-*** Méthode de Gauss
+#+Title:Résolution de systèmes linéaires : Méthodes directes
 
-\[  x_6 \]
+** TODO Finir le boulot !! [0/5]
+:PROPERTIES:
+:CREATED:  <2021-09-24 ven. 10:53>
+:END:
+
+*** TODO Présenter les programmes
+:PROPERTIES:
+:CREATED:  <2021-09-24 ven. 10:52>
+:END:
+*** TODO Le commenter
+*** TODO Test les matrices [0/2]:
+:PROPERTIES:
+:CREATED:  <2021-09-24 ven. 10:55>
+:END:
+**** TODO Test les matricesau dos de la feuille 
+:PROPERTIES:
+:CREATED:  <2021-09-24 ven. 10:55>
+:END:
+**** TODO Tester pour des matrices de grandes tailles
+**** TODO Tester pour des matrices avec + de 70% de 0
+:PROPERTIES:
+:CREATED:  <2021-09-24 ven. 10:54>
+:END:
+
+
+:PROPERTIES:
+:CREATED:  <2021-09-24 ven. 10:52>
+:END:
+*** TODO Résultats modifiés ?
+*** TODO Mettre la complexité
+:PROPERTIES:
+:CREATED:  <2021-09-24 ven. 10:58>
+:END:
+** Rappel rapide des méthodes
+*** Méthode de Gauss
+Cette méthode permet de trouver une solution exacte au système $Ax = b$ en un nombre fini d'étape.
+
+
+Pour ce faire, cette méthode se fait en plusieurs étapes :
+
+1. La triangularisation
+   On doit passer du système $Ax=b$ au système $A'x=b'$ où A' est une matrice triangulaire supérieure. L'algorithme utilisé est disponible dans le programme.
+2. La résolution facile
+   =Nécessite aucun 0 sur la diagonale de A=
+
+*** Méthode de Jacobi
+
+Cette méthode fait partie des méthodes itératives, où l'on cherche à se rapprocher, avec une suite d'itération définie, à une solution exacte.
+
+Pour cette méthode, nous devons tout d'abord décomposer A sous la forme A = D -E -F
+
+1. D est la matrice nul de taille A, sauf sur sa diagonale où D possède les coefficients de A.
+2. -E est la matrice triangulaire inférieure de A
+3. -F est la matrice triangulaire supérieur de A
+
+
+
+De plus, on pose $M = D$ et $N = E + F$
+
+On obtient donc le système : 
+
+\[Ax = b \Longleftrightarrow Dx^{k+1} = (E + F)x^k + b \]
+
+pour l'itération $k+1$
+
+De plus, l'algorithme de Jacobi s'écrit avec une précision \epsilon : 
+
+
+
+
+** Présentation des programmes commentés
+
+** Présentation des matrices test au dos de la feuille
+
+** Conclusion ssur les méthodes 
+
+*** TODO Comparaison
+:PROPERTIES:
+:CREATED:  <2021-09-24 ven. 11:00>
+:END:
+
+*** TODO Cadre d'utilisation
+:PROPERTIES:
+:CREATED:  <2021-09-24 ven. 11:00>
+:END:
+
+*** TODO Stabilité
+:PROPERTIES:
+:CREATED:  <2021-09-24 ven. 11:00>
+:END:
+
