@@ -1,7 +1,7 @@
 
 CC=gcc
 CFLAGS=-Wall
-LDFLAGS=
+LDFLAGS=-lm
 EXEC=main
 
 #pour SRC qui contient la liste des fichiers sources du projet (ici tous ler .c). OBJ pour la liste des fichiers objet.

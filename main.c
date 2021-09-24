@@ -1,27 +1,25 @@
 #include "main.h"
 #include "fonction.h"
 
-
 int main()
 {
-  srand(time(NULL));
 
+  srand(time(NULL));
 
   matrice *t = creerMatrice(4, 4);
   matrice *e = creerMatrice(4, 8);
 
-  remplisAleaBcpZero(t);
-  remplisAleaBcpZero(e);
-
-  afficheMatrice(*t);
   afficheMatrice(*e);
 
-
-  
-  matrice *s = additionMatrice(*t, *e); 
+  matrice *s = additionMatrice(*t, *e);
 
   afficheMatrice(*s);
-  
+
+  matrice *a = creerMatrice(4, 4);
+  remplisAleaBcpZero(a);
+  afficheMatrice(*a);
+  InversematriceD(4, a);
+  afficheMatrice(*a);
 
   return 0;
 }
