@@ -23,8 +23,12 @@ matrice *creerMatrice(int largeur, int longueur);
 void destroyMatrice(matrice *mat);
 void afficheMatrice(matrice mat);
 void remplisAleaBcpZero(matrice *mat);
+void remplisAlea(matrice *mat);
+void remplisAleaInt(matrice *mat);
 matrice *additionMatrice(matrice mat1, matrice mat2);
 matrice *Jacobi(matrice *A, matrice *B);
 void InversematriceD(int taille, matrice *D);
+
+matrice *Gauss(matrice mat);
 
 #endif
