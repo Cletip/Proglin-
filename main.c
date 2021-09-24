@@ -11,15 +11,15 @@ int main()
 
   afficheMatrice(*e);
 
-  matrice *s = Gauss(*t); 
+  matrice *s = Gauss(*t);
 
   afficheMatrice(*s);
 
   matrice *a = creerMatrice(4, 4);
   remplisAleaBcpZero(a);
-  afficheMatrice(*a);
+  /* afficheMatrice(*a); */
   InversematriceD(4, a);
-  afficheMatrice(*a);
+  /* afficheMatrice(*a); */
 
   return 0;
 }
