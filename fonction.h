@@ -17,8 +17,11 @@ matrice *creerMatrice(int largeur, int longueur);
 void destroyMatrice(matrice *mat);
 void afficheMatrice(matrice mat);
 void remplisAleaBcpZero(matrice *mat);
+void remplisAlea(matrice *mat);
+void remplisAleaInt(matrice *mat);
 matrice *additionMatrice(matrice mat1, matrice mat2);
 
+matrice *Gauss(matrice mat);
 
 
 #endif
