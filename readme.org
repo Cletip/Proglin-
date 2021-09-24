@@ -1,4 +1,8 @@
-* TP1
+#+Title:TP1
 ** Rappel rapide des méthodes
 *** Méthode de Jacobi
+Pour cette méthode, 
 On pose M
+*** Méthode de Gauss
+
+\[  x_6 \]
