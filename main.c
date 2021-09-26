@@ -8,7 +8,7 @@ int main()
 
   matrice *t = creerMatrice(4, 4);
   matrice *e = creerMatrice(4, 8);
-
+  
   afficheMatrice(*e);
 
   matrice *s = Gauss(*t);
