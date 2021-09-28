@@ -59,8 +59,37 @@ int main()
 
   matrice *verif = multiplicationMatrice(*Test, *FC);
   afficheMatrice(*verif);
+
+  rempliBord(Test);
+  afficheMatrice(*Test);
+
+  rempliDingDong(Test);
+  afficheMatrice(*Test);
+
+  rempliFranc(Test);
+  afficheMatrice(*Test);
+
+  rempliHilbertNeg(Test);
+  afficheMatrice(*Test);
+
+  rempliHilbertPos(Test);
+  afficheMatrice(*Test);
+
+  rempliKms(Test);
+  afficheMatrice(*Test);
+
+  rempliLehmer(Test);
+  afficheMatrice(*Test);
+
+  rempliLotkin(Test);
+  afficheMatrice(*Test);
+
+  rempliMoler(Test);
+  afficheMatrice(*Test);
+
   
 
+  
   
 
   return 0;
