@@ -105,3 +105,4 @@ Pour effectuer ce travail, nous avons décidé de séparer notre programme en pl
 :CREATED:  <2021-09-24 ven. 11:00>
 :END:
 
+Cette méthode a un coût de l'ordre de 3n2+2n par itération. Elle converge moins vite que la méthode de Gauss-Seidel, mais est très facilement parallélisable. 
