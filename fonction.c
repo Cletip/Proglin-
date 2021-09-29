@@ -129,30 +129,70 @@ matrice *additionMatrice(matrice mat1, matrice mat2)
   return fini;
 }
 
-matrice *multiplicationMatrice(matrice mat1, matrice mat2){
+matrice *soustractino(matrice mat1, matrice mat2)
+{
+  // initialisation des variables
+  matrice *fini;
+  long double res;
+
+  // initialisation de la matrice de retour
+
+  // création de la matrice fini avec la taille de la taille max entre
+  // 2 matrices
+  fini = creerMatrice(
+      (mat1.largeur > mat2.largeur) ? mat1.largeur : mat2.largeur,
+      (mat1.longueur > mat2.longueur) ? mat1.longueur : mat2.longueur);
+
+  // mise du resultat dans la matrice de retour
+  for (int i = 0; i < fini->longueur; i++)
+  {
+    for (int j = 0; j < fini->largeur; j++)
+    {
+      res = 0;
+      if ((mat1.longueur > i) && (mat1.largeur > j))
+      {
+        res += mat1.Mat[i][j];
+      }
+      if ((mat2.longueur > i) && (mat2.largeur > j))
+      {
+        res -= mat2.Mat[i][j];
+      }
+      fini->Mat[i][j] = res;
+    }
+  }
+
+  // retour de la matrice de resultat
+  return fini;
+}
+
+matrice *multiplicationMatrice(matrice mat1, matrice mat2)
+{
   // verification des conditions
-  if(mat1.largeur != mat2.longueur){
+  if (mat1.largeur != mat2.longueur)
+  {
     printf("On ne peu pas multiplier ces deux matrices ensemble.\n");
     return NULL;
   }
-  
+
   // initialisation des variables
-  matrice *fini = creerMatrice(mat2.largeur, mat1.longueur);
+  matrice *Xfini = creerMatrice(mat2.largeur, mat1.longueur);
   long double lambda;
-  afficheMatrice(mat1);
-  //calcule de chaque case une par une
-  for(int i = 0; i < mat1.longueur; i++){
-    for(int j = 0; j < mat2.largeur; j++){
+  /* afficheMatrice(mat1); */
+  // calcule de chaque case une par une
+  for (int i = 0; i < mat1.longueur; i++)
+  {
+    for (int j = 0; j < mat2.largeur; j++)
+    {
       lambda = 0;
-      for(int h = 0; h < mat1.largeur; h++){
-	lambda += (mat1.Mat[i][h]*mat2.Mat[h][j]);
+      for (int h = 0; h < mat1.largeur; h++)
+      {
+        lambda += (mat1.Mat[i][h] * mat2.Mat[h][j]);
       }
-      fini->Mat[i][j] = lambda;
+      Xfini->Mat[i][j] = lambda;
     }
   }
-  
 
-  return fini;
+  return Xfini;
 }
 
 /* Pour inverser une matrice dont les coeff sont nul sauf la diagonale */
@@ -170,9 +210,18 @@ void InversematriceD(int taille, matrice *D)
   }
 }
 
-matrice *Jacobi(matrice *A, matrice *B)
+float Norme(matrice *colonne)
 {
-  printf("Début jacco\n");
+  float norme = 0;
+  for (int i = 0; i < colonne->longueur; ++i)
+  {
+    norme = norme + pow(colonne->Mat[i][0], 2);
+  }
+  return sqrt(norme);
+}
+
+matrice *Jacobi(matrice *A, matrice *B, float Eps, int nombremaxinte)
+{
   /* gestion des cas d'erreur pouvant faire echouer la methode jacobi*/
   if ((A->largeur != A->longueur) || (A->longueur != B->longueur) ||
       (B->largeur != 1))
@@ -224,33 +273,39 @@ matrice *Jacobi(matrice *A, matrice *B)
       else if (i < j)
       {
         D->Mat[i][j] = 0;
-        E->Mat[i][j] = A->Mat[i][j];
+        E->Mat[i][j] = -(A->Mat[i][j]);
         F->Mat[i][j] = 0;
       }
       else
       {
         D->Mat[i][j] = 0;
         E->Mat[i][j] = 0;
-        F->Mat[i][j] = A->Mat[i][j];
+        F->Mat[i][j] = -(A->Mat[i][j]);
       }
       N->Mat[i][j] = E->Mat[i][j] + F->Mat[i][j];
     }
   }
 
+  // initialisation de x
+  /* for (int i = 0; i < x->longueur; ++i) */
+  /* { */
+  /* x->Mat[0][i] = 0; */
+  /* } */
+
   int k = 0;
-  float Eps = 0.0;
   float erreur = Eps + 1;
+  InversematriceD(D->longueur, D);
 
   /* while ((pow(sigma, k)) >= sigma) */
-  while (5 >= Eps)
+  while (erreur > Eps)
   {
-    x->Mat[1][];
-    // TODO: retirer cette ligne qui annule juste la boucle infini
-    Eps++;
-    printf("Test boucle\n");
-  }
+    // nouvelle valeur de x selon la formule
+    x = multiplicationMatrice(
+        *D, *additionMatrice(*(multiplicationMatrice(*N, *x)), *B));
 
-  printf("Fin jacco\n");
+    // TODO: retirer cette ligne qui annule juste la boucle infini
+    erreur = Norme(soustractino(*multiplicationMatrice(*A, *x), *B));
+  }
   return x;
 }
 

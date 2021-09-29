@@ -5,38 +5,46 @@ int main()
 {
   srand(time(NULL));
   int estAdiagdomine = 0;
-  int taille = 5;
+  int taille = 2;
 
   matrice *t = creerMatrice(5, 5);
   matrice *e = creerMatrice(taille, taille);
-  matrice *f = creerMatrice(1, 5);
+  matrice *f = creerMatrice(1, taille);
 
   remplisAlea(t);
-  while(!estAdiagdomine){
+  while (!estAdiagdomine)
+  {
     remplisAleaBcpZero(e);
     estAdiagdomine = 1;
-    for(int i = 0; i < taille; i++){
+    for (int i = 0; i < taille; i++)
+    {
       int verifieur = 0;
-      for(int j = 0; j < taille; j++){
-	if(j != i){
-	  verifieur += fabsl(e->Mat[i][j]);
-	}
+      for (int j = 0; j < taille; j++)
+      {
+        if (j != i)
+        {
+          verifieur += fabsl(e->Mat[i][j]);
+        }
       }
-      if(verifieur > e->Mat[i][i]){
-	estAdiagdomine = 0;
-	break;
+      if (verifieur > e->Mat[i][i])
+      {
+        estAdiagdomine = 0;
+        break;
       }
     }
   }
 
-  
   remplisAlea(f);
-  
-  afficheMatrice(*t);
+
+  e->Mat[0][0] = 5;
+  e->Mat[0][1] = 3;
+  e->Mat[1][0] = 2;
+  e->Mat[1][1] = 5;
+  /* afficheMatrice(*t); */
 
   matrice *s = Gauss(*t);
 
-  afficheMatrice(*s);
+  /* afficheMatrice(*s); */
 
   matrice *a = creerMatrice(4, 4);
   remplisAleaBcpZero(a);
@@ -44,9 +52,12 @@ int main()
   InversematriceD(4, a);
   /* afficheMatrice(*a); */
 
-  
-  Jacobi(e, f);
-  
+  matrice *x = Jacobi(e, f, 0.0001, 200);
+  afficheMatrice(*x);
+
+  afficheMatrice(*multiplicationMatrice(*e, *x));
+  printf(" ligne blanche\n");
+  afficheMatrice(*f);
 
   matrice *Test = creerMatrice(3, 3);
   remplisAleaInt(Test);
@@ -59,9 +70,6 @@ int main()
 
   matrice *verif = multiplicationMatrice(*Test, *FC);
   afficheMatrice(*verif);
-  
-
-  
 
   return 0;
 }
