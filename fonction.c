@@ -221,98 +221,6 @@ float Norme(matrice *colonne)
   return sqrt(norme);
 }
 
-matrice *Jacobi(matrice *A, matrice *B, float Eps, int nombremaxinte)
-{
-  /* gestion des cas d'erreur pouvant faire echouer la methode jacobi*/
-  if ((A->largeur != A->longueur) || (A->longueur != B->longueur) ||
-      (B->largeur != 1))
-  {
-    printf(
-        "Les matrice ne sont pas de la taille nécessaire a leurs résolution.");
-    return B;
-  }
-  else
-  {
-    for (int i = 0; i < A->longueur; i++)
-    {
-      int verifieur = 0;
-      for (int j = 0; j < A->longueur; j++)
-      {
-        if (j != i)
-        {
-          verifieur += fabsl(A->Mat[i][j]);
-        }
-      }
-      if (verifieur > A->Mat[i][i])
-      {
-        printf("La matrice n'est pas à diagonale dominante et ne vas donc pas "
-               "converger...\n");
-        return B;
-      }
-    }
-  }
-
-  /* création pour résoudre le système */
-  matrice *x = creerMatrice(1, A->longueur);
-  matrice *D = creerMatrice(A->largeur, A->longueur);
-  matrice *E = creerMatrice(A->largeur, A->longueur);
-  matrice *F = creerMatrice(A->largeur, A->longueur);
-  matrice *M = F;
-  matrice *N = creerMatrice(A->largeur, A->longueur);
-
-  /* initialisation de D E et F */
-  for (int i = 0; i < A->longueur; i++)
-  {
-    for (int j = 0; j < A->largeur; j++)
-    {
-      if (i == j)
-      {
-        D->Mat[i][j] = A->Mat[i][j];
-        E->Mat[i][j] = 0;
-        F->Mat[i][j] = 0;
-      }
-      else if (i < j)
-      {
-        D->Mat[i][j] = 0;
-        E->Mat[i][j] = -(A->Mat[i][j]);
-        F->Mat[i][j] = 0;
-      }
-      else
-      {
-        D->Mat[i][j] = 0;
-        E->Mat[i][j] = 0;
-        F->Mat[i][j] = -(A->Mat[i][j]);
-      }
-      N->Mat[i][j] = E->Mat[i][j] + F->Mat[i][j];
-    }
-  }
-
-  // initialisation de x
-  /* for (int i = 0; i < x->longueur; ++i) */
-  /* { */
-  /* x->Mat[0][i] = 0; */
-  /* } */
-
-  int k = 0;
-  float erreur = Eps + 1;
-  InversematriceD(D->longueur, D);
-
-  /* while ((pow(sigma, k)) >= sigma) */
-  while (erreur > Eps)
-  {
-
-    // nouvelle valeur de x selon la formule
-    x = multiplicationMatrice(
-        *D, *additionMatrice(*(multiplicationMatrice(*N, *x)), *B));
-
-    x->Mat[1][1] = 0;
-
-    // TODO: retirer cette ligne qui annule juste la boucle infini
-    erreur = Norme(soustractino(*multiplicationMatrice(*A, *x), *B));
-  }
-  return x;
-}
-
 void rempliBord(matrice *A){
   for(int i = 0; i < A->longueur; i++){
     for(int j = 0; j < A->largeur; j++){
@@ -410,8 +318,92 @@ void rempliLotkin(matrice *A) {
   }
 }
 
+matrice *Jacobi(matrice *A, matrice *B, float Eps, int nombremaxinte)
+{
+  /* gestion des cas d'erreur pouvant faire echouer la methode jacobi*/
+  if ((A->largeur != A->longueur) || (A->longueur != B->longueur) ||
+      (B->largeur != 1))
+  {
+    printf(
+        "Les matrice ne sont pas de la taille nécessaire a leurs résolution.");
+    return B;
+  }
+  else
+  {
+    for (int i = 0; i < A->longueur; i++)
+    {
+      int verifieur = 0;
+      for (int j = 0; j < A->longueur; j++)
+      {
+        if (j != i)
+        {
+          verifieur += fabsl(A->Mat[i][j]);
+        }
+      }
+      if (verifieur > A->Mat[i][i])
+      {
+        printf("La matrice n'est pas à diagonale dominante et ne vas donc pas "
+               "converger...\n");
+        return B;
+      }
+    }
+  }
 
+  /* création pour résoudre le système */
+  matrice *x = creerMatrice(1, A->longueur);
+  matrice *D = creerMatrice(A->largeur, A->longueur);
+  matrice *E = creerMatrice(A->largeur, A->longueur);
+  matrice *F = creerMatrice(A->largeur, A->longueur);
+  matrice *N = creerMatrice(A->largeur, A->longueur);
 
+  /* initialisation de D E et F */
+  for (int i = 0; i < A->longueur; i++)
+  {
+    for (int j = 0; j < A->largeur; j++)
+    {
+      if (i == j)
+      {
+        D->Mat[i][j] = A->Mat[i][j];
+        E->Mat[i][j] = 0;
+        F->Mat[i][j] = 0;
+      }
+      else if (i < j)
+      {
+        D->Mat[i][j] = 0;
+        E->Mat[i][j] = -(A->Mat[i][j]);
+        F->Mat[i][j] = 0;
+      }
+      else
+      {
+        D->Mat[i][j] = 0;
+        E->Mat[i][j] = 0;
+        F->Mat[i][j] = -(A->Mat[i][j]);
+      }
+      N->Mat[i][j] = E->Mat[i][j] + F->Mat[i][j];
+    }
+  }
+
+  // initialisation de x
+  /* for (int i = 0; i < x->longueur; ++i) */
+  /* { */
+  /* x->Mat[0][i] = 0; */
+  /* } */
+
+  float erreur = Eps + 1;
+  InversematriceD(D->longueur, D);
+
+  /* while ((pow(sigma, k)) >= sigma) */
+  while (erreur > Eps)
+  {
+    // nouvelle valeur de x selon la formule
+    x = multiplicationMatrice(
+        *D, *additionMatrice(*(multiplicationMatrice(*N, *x)), *B));
+
+    // TODO: retirer cette ligne qui annule juste la boucle infini
+    erreur = Norme(soustractino(*multiplicationMatrice(*A, *x), *B));
+  }
+  return x;
+}
 
 matrice *Gauss(matrice mat){
   /* gestion du cas d'erreur ou la matrice n'est pas carré*/

@@ -28,7 +28,7 @@ void remplisAleaInt(matrice *mat);
 matrice *additionMatrice(matrice mat1, matrice mat2);
 matrice *soustractino(matrice mat1, matrice mat2);
 matrice *multiplicationMatrice(matrice mat1, matrice mat2);
-matrice *Jacobi(matrice *A, matrice *B, float Eps, int nombremaxinte);
+
 void InversematriceD(int taille, matrice *D);
 
 void rempliBord(matrice *A);
@@ -41,6 +41,7 @@ void rempliLehmer(matrice *A);
 void rempliLotkin(matrice *A);
 void rempliMoler(matrice *A);
 
+matrice *Jacobi(matrice *A, matrice *B, float Eps, int nombremaxinte);
 matrice *Gauss(matrice mat);
 matrice *ResolutionParGauss(matrice A, matrice B);
 float Norme(matrice *colonne);

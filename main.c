@@ -55,7 +55,6 @@ int main()
   matrice *x = Jacobi(e, f, 0.0001, 200);
   afficheMatrice(*x);
 
-  afficheMatrice(*multiplicationMatrice(*e, *x));
   printf(" ligne blanche\n");
   afficheMatrice(*f);
 
