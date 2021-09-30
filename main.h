@@ -7,4 +7,9 @@
 #include <stdio.h>
 #include <time.h>
 
+
+
+
+void casMultiplication(matrice *A, matrice *B, matrice *X);
+
 #endif
