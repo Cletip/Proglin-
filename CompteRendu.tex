@@ -1,0 +1,455 @@
+% Created 2021-09-30 jeu. 18:15
+% Intended LaTeX compiler: pdflatex
+\documentclass[letter]{article}
+                      \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage[a4paper,left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage[frenchb, ]{babel}
+\usepackage{libertine}
+\usepackage[pdftex]{graphicx}
+\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
+\newcommand{\hsp}{\hspace{20pt}}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\date{\today}
+\title{Résolution de systèmes linéaires : Méthodes directes}
+\begin{document}
+
+
+%chargement de la page de garde
+\input{/home/msi/Documents/Org/Latex/Setupfile/Pagedegarde/Pagedegarde1/pagedegarde1.org}
+
+
+\setcounter{tocdepth}{2}
+\tableofcontents
+
+\newpage
+
+
+
+
+\section{Rappel rapide des méthodes}
+\label{sec:org7ef68bf}
+\subsection{Méthode de Gauss}
+\label{sec:org29b02a0}
+Cette méthode permet de trouver une solution exacte au système \(Ax = b\) en un nombre fini d'étape.
+
+
+Pour ce faire, cette méthode se fait en plusieurs étapes :
+
+\begin{enumerate}
+\item La triangularisation
+On doit passer du système \(Ax=b\) au système \(A'x=b'\) où A' est une matrice triangulaire supérieure. L'algorithme utilisé est disponible dans le programme.
+\item La résolution facile
+\texttt{Nécessite aucun 0 sur la diagonale de A}
+\end{enumerate}
+
+\subsection{Méthode de Jacobi}
+\label{sec:org2184769}
+
+Cette méthode fait partie des méthodes itératives, où l'on cherche à se rapprocher, avec une suite d'itération définie, à une solution exacte.
+
+Pour cette méthode, nous devons tout d'abord décomposer A sous la forme A = D -E -F
+
+\begin{enumerate}
+\item D est la matrice nul de taille A, sauf sur sa diagonale où D possède les coefficients de A.
+\item -E est la matrice triangulaire inférieure de A
+\item -F est la matrice triangulaire supérieur de A
+\end{enumerate}
+
+
+
+De plus, on pose \(M = D\) et \(N = E + F\)
+
+On obtient donc le système : 
+
+\[Ax = b \Longleftrightarrow Dx^{k+1} = (E + F)x^k + b \]
+
+pour l'itération \(k+1\)
+
+De plus, l'algorithme de Jacobi s'écrit avec une précision \(\epsilon\) : 
+
+
+
+
+\section{Présentation des programmes commentés}
+\label{sec:orgfad8b0b}
+
+\subsection{Présentation Général :}
+\label{sec:orga078d22}
+
+\subsubsection{Les différents fichiers utilisés}
+\label{sec:org1102491}
+Pour effectuer ce travail, nous avons décidé de séparer notre programme en plusieurs fichiers : 
+
+\begin{enumerate}
+\item main.c, qui est notre fichier appelant les divers fonctions présentent dans
+\item fonction.c, puis
+\item fonction.h, permettant de définir les différentes structures et les headers des fonctions, et enfin
+\item main.h, où les différentes bibliothèques sont déclarées
+\item De plus, il y a un Makefile, qui nous permet de compiler et tester notre programme efficacement
+\end{enumerate}
+
+
+
+
+
+
+
+\subsubsection{Les structures ainsi que les fonctions usuelles}
+\label{sec:orge2bae7b}
+
+\begin{enumerate}
+\item La structure de nos matrice
+\label{sec:org9733350}
+
+Nous avons choisis de définir notre structure matrice de la sorte :
+
+\begin{verbatim}
+
+  typedef struct matrice
+{
+  int longueur;
+  int largeur;
+  long double **Mat;
+} matrice;
+
+\end{verbatim}
+
+Mettre la longueur et la largeur de la matrice directement dans la structure permet à nos fonction de ne plus les avoir en paramètre. De plus, les matrices sont des doubles tableaux. On utilise dont un pointeur de pointeur pour permettre, grâce à la fonction 
+
+
+\item Les fonctions usuelles
+\label{sec:org1fd1b86}
+
+
+\begin{enumerate}
+\item \emph{creerMatrice}, qui prend un paramètre la largeur et la longueur, et qui renvoie un pointeur de matrice. Cette fonction fait principalement la création et l'initialisation d'un tableau 2D avec des 0.
+\begin{verbatim}
+
+matrice *creerMatrice(int largeur, int longueur)
+{
+  /* création d'un pointeur sur une structure matrice (avec l'espace
+     alloué de la structure matrice)  */
+  matrice *fini = (matrice *)malloc(sizeof(matrice));
+
+  /* attribution de la longueur et de la largeur */
+  fini->longueur = longueur;
+  fini->largeur = largeur;
+
+  /* Création du double tableau, la matrice même (initialisé à 0)  */
+  fini->Mat = (long double **)malloc(fini->longueur * sizeof(long double *));
+  /* parcourt de la matrice avec la double boucle for */
+  for (int i = 0; i < fini->longueur; i++)
+    {
+      fini->Mat[i] = (long double *)malloc(fini->largeur * sizeof(long double));
+      for (int j = 0; j < fini->largeur; j++)
+	{
+	  fini->Mat[i][j] = 0;
+	}
+    }
+
+  /* renvoie de la fini */
+  return fini;
+}     
+
+\end{verbatim}
+
+\item \emph{destroyMatrice}, qui permet de supprimer et de vider la mémoire d'une matrice.
+\begin{verbatim}
+void destroyMatrice(matrice *mat)
+{
+  for (int i = 0; i < mat->longueur; i++)
+  {
+    free(mat->Mat[i]);
+  }
+  free(mat->Mat);
+  mat->longueur = 0;
+  mat->largeur = 0;
+  free(mat);
+}
+\end{verbatim}
+
+\item / afficheMatrice/, qui permet tout simplement d'afficher une matrice.
+
+\item \emph{remplisAleaBcpZero}, qui permet de remplir une matrice avec environ 70\% de 0.
+
+\item \emph{remplisAlea}, permettant de remplir une matrice avec des nombres aléatoire (etre -100 et 100)
+
+\item \emph{remplisAleaInt}, déclinaison de remplisAlea avec des entier
+
+\item \emph{additionMatrice}, qui, comme son nom l'indique, d'additionner 2 matrices
+\begin{verbatim}
+matrice *additionMatrice(matrice mat1, matrice mat2)
+{
+  // initialisation des variables
+  matrice *fini;
+  long double res;
+
+  // initialisation de la matrice de retour
+
+  // création de la matrice fini avec la taille de la taille max entre
+  // 2 matrices
+  fini = creerMatrice(
+      (mat1.largeur > mat2.largeur) ? mat1.largeur : mat2.largeur,
+      (mat1.longueur > mat2.longueur) ? mat1.longueur : mat2.longueur);
+
+  // mise du resultat dans la matrice de retour
+  for (int i = 0; i < fini->longueur; i++)
+  {
+    for (int j = 0; j < fini->largeur; j++)
+    {
+      res = 0;
+      if ((mat1.longueur > i) && (mat1.largeur > j))
+      {
+	res += mat1.Mat[i][j];
+      }
+      if ((mat2.longueur > i) && (mat2.largeur > j))
+      {
+	res += mat2.Mat[i][j];
+      }
+      fini->Mat[i][j] = res;
+    }
+  }
+
+  // retour de la matrice de resultat
+  return fini;
+}
+\end{verbatim}
+
+\item \emph{soustractino}, qui permet de les soustraire
+
+\item \emph{multiplicationMatrice}, qui les multiplie
+\begin{verbatim}
+matrice *multiplicationMatrice(matrice mat1, matrice mat2)
+{
+  // verification des conditions
+  if (mat1.largeur != mat2.longueur)
+  {
+    printf("On ne peu pas multiplier ces deux matrices ensemble.\n");
+    return NULL;
+  }
+
+  // initialisation des variables
+  matrice *Xfini = creerMatrice(mat2.largeur, mat1.longueur);
+  long double lambda;
+  /* afficheMatrice(mat1); */
+  // calcule de chaque case une par une
+  for (int i = 0; i < mat1.longueur; i++)
+  {
+    for (int j = 0; j < mat2.largeur; j++)
+    {
+      lambda = 0;
+      for (int h = 0; h < mat1.largeur; h++)
+      {
+	lambda += (mat1.Mat[i][h] * mat2.Mat[h][j]);
+      }
+      Xfini->Mat[i][j] = lambda;
+    }
+  }
+
+  return Xfini;
+}
+\end{verbatim}
+\end{enumerate}
+\end{enumerate}
+
+
+
+
+
+
+\subsection{Gauss}
+\label{sec:org2b49530}
+
+\subsection{Jacobi}
+\label{sec:org68185ca}
+
+\subsubsection{Gestion des matrices non diagonales dominantes}
+\label{sec:orgd8bdd70}
+
+
+Tout d'abord, pour utiliser la méthode de Jacobi, il faut que les matrices soient de la bonne taille. On vérifie donc que la matrice A est carré, que la longueur de A est égal à celle de B, ainsi que la largeur de B qui doit être égal à un. Ces conditions sont testés avec ce code :
+\begin{verbatim}
+
+/* gestion des cas d'erreur pouvant faire echouer la methode jacobi*/
+if ((A->largeur != A->longueur) || (A->longueur != B->longueur) ||
+    (B->largeur != 1))
+{
+  printf(
+      "Les matrice ne sont pas de la taille nécessaire a leurs résolution.");
+  return B;
+}
+ else
+
+
+\end{verbatim}
+
+
+
+Puis, il faut aussi que les matrices soient strictement diagonales dominantes.
+Pour ce faire, nous pouvons mettre au début de la fonction "Jacobi", une double boucle for qui test si les diagonales sont bien dominantes :
+
+\begin{verbatim}
+
+  else
+{
+  for (int i = 0; i < A->longueur; i++)
+  {
+    int verifieur = 0;
+    for (int j = 0; j < A->longueur; j++)
+    {
+      if (j != i)
+      {
+	verifieur += fabsl(A->Mat[i][j]);
+      }
+    }
+    if (verifieur > A->Mat[i][i])
+    {
+      printf("La matrice n'est pas à diagonale dominante et ne vas donc pas "
+	     "converger...\n");
+      return B;
+    }
+  }
+}
+
+
+\end{verbatim}
+
+
+Sinon, le reste du code est exécuté normalement.
+
+
+
+
+
+
+
+
+\subsubsection{Méthode général}
+\label{sec:org5f5c05a}
+
+Suites à la création des matrices x, D, E, F (et N) à l'aide des fonction usuelles, il faut les initialiser avec les bonnes valeurs. On a choisit de faire un parcours de la matrice A, et lorsque les conditions sont réunies, nous entrons la valeur de A en fonction de la matrice.
+
+\begin{verbatim}
+  /* initialisation de D E et F (et N)*/
+for (int i = 0; i < A->longueur; i++)
+{
+  for (int j = 0; j < A->largeur; j++)
+  {
+    if (i == j)
+    {
+      D->Mat[i][j] = A->Mat[i][j];
+      E->Mat[i][j] = 0;
+      F->Mat[i][j] = 0;
+    }
+    else if (i < j)
+    {
+      D->Mat[i][j] = 0;
+      E->Mat[i][j] = -(A->Mat[i][j]);
+      F->Mat[i][j] = 0;
+    }
+    else
+    {
+      D->Mat[i][j] = 0;
+      E->Mat[i][j] = 0;
+      F->Mat[i][j] = -(A->Mat[i][j]);
+    }
+    N->Mat[i][j] = E->Mat[i][j] + F->Mat[i][j];
+  }
+}
+
+
+\end{verbatim}
+
+Puis, on initialise la marge d'erreur. Nous inversons également D (avec la fonction \emph{InversematriceD}), car il faut utiliser \(D^{-1}\)
+
+
+\begin{verbatim}
+
+void InversematriceD(int taille, matrice *D)
+{
+  for (int i = 0; i < D->longueur; i++)
+    {
+      for (int j = 0; j < D->largeur; j++)
+	{
+	  if ((i == j) && (D->Mat[i][j] != 0))
+	    {
+	      D->Mat[i][j] = 1 / D->Mat[i][j];
+	    }
+	}
+    }
+}
+
+
+float erreur = Eps + 1;
+InversematriceD(D->longueur, D);
+
+
+\end{verbatim}
+
+Enfin, nous programmons la méthode de Jacobi grâce aux fonctions "multiplicationMatrice, additionMatrice".
+La boucle utiliser est un tant que, car nous ne savons pas quand la marge d'erreur sera respecté pour sortir de la boucle while.
+La variable erreur doit également être mise à jour à chaque passage dans la boucle, en utilisant la fonction \emph{Norme}.
+
+
+
+\begin{verbatim}
+
+
+float Norme(matrice *colonne)
+{
+  float norme = 0;
+  for (int i = 0; i < colonne->longueur; ++i)
+    {
+      norme = norme + pow(colonne->Mat[i][0], 2);
+    }
+  return sqrt(norme);
+}
+
+while (erreur > Eps)
+  {
+    // nouvelle valeur de x selon la formule
+    x = multiplicationMatrice(*D, *additionMatrice(*(multiplicationMatrice(*N, *x)), *B));
+    // nouvelle valeur d'erreur selon la formule
+    erreur = Norme(soustractino(*multiplicationMatrice(*A, *x), *B));
+
+  }
+return x;
+}
+
+\end{verbatim}
+
+\subsection{Programme final}
+\label{sec:org47dda42}
+
+Les différentes fonctions sont appelées au fur et à mesure du main.c, en laissant le choix à l'utilisateur avec quelle matrice il veut faire ses tests, ainsi que la méthode à utiliser. Les différents choix sont regroupés dans un switch.
+
+\section{Présentation des matrices test au dos de la feuille}
+\label{sec:orgb2cb275}
+
+\href{fonction.c}{aller ici}
+
+\section{Conclusion ssur les méthodes}
+\label{sec:org1717882}
+
+\subsection{{\bfseries\sffamily TODO} Comparaison}
+\label{sec:org34dd967}
+
+\subsection{{\bfseries\sffamily TODO} Cadre d'utilisation}
+\label{sec:orgb485f48}
+
+\subsection{{\bfseries\sffamily TODO} Stabilité}
+\label{sec:org1547ee7}
+Cette méthode a un coût de l'ordre de 3n2+2n par itération. Elle converge moins vite que la méthode de Gauss-Seidel, mais est très facilement parallélisable. 
+\end{document}
