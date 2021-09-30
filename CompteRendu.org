@@ -401,9 +401,13 @@ La variable erreur doit également être mise à jour à chaque passage dans la 
 
 Les différentes fonctions sont appelées au fur et à mesure du main.c, en laissant le choix à l'utilisateur avec quelle matrice il veut faire ses tests, ainsi que la méthode à utiliser. Les différents choix sont regroupés dans un switch.
 
+
+
 ** Présentation des matrices test au dos de la feuille
 
-[[file:fonction.c::void rempliBord(matrice *A){][aller ici]]
+[[file:matricetest.c::{][ici]]
+
+
 
 ** Conclusion ssur les méthodes 
 
