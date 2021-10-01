@@ -405,7 +405,9 @@ Les différentes fonctions sont appelées au fur et à mesure du main.c, en lais
 
 ** Présentation des matrices test au dos de la feuille
 
-[[file:matricetest.c::{][ici]]
+Nous ne mettrons pas toutes les matrices test, mais vous pouvez les retrouver [[file:matricetest.c::{][ici]].
+
+
 
 
 

@@ -1,4 +1,4 @@
-% Created 2021-09-30 jeu. 18:15
+% Created 2021-10-01 ven. 09:39
 % Intended LaTeX compiler: pdflatex
 \documentclass[letter]{article}
                       \usepackage[utf8]{inputenc}
@@ -39,9 +39,9 @@
 
 
 \section{Rappel rapide des méthodes}
-\label{sec:org7ef68bf}
+\label{sec:org813ce7d}
 \subsection{Méthode de Gauss}
-\label{sec:org29b02a0}
+\label{sec:org65a4d0c}
 Cette méthode permet de trouver une solution exacte au système \(Ax = b\) en un nombre fini d'étape.
 
 
@@ -55,7 +55,7 @@ On doit passer du système \(Ax=b\) au système \(A'x=b'\) où A' est une matric
 \end{enumerate}
 
 \subsection{Méthode de Jacobi}
-\label{sec:org2184769}
+\label{sec:org5cf438b}
 
 Cette méthode fait partie des méthodes itératives, où l'on cherche à se rapprocher, avec une suite d'itération définie, à une solution exacte.
 
@@ -83,13 +83,13 @@ De plus, l'algorithme de Jacobi s'écrit avec une précision \(\epsilon\) :
 
 
 \section{Présentation des programmes commentés}
-\label{sec:orgfad8b0b}
+\label{sec:orge09559f}
 
 \subsection{Présentation Général :}
-\label{sec:orga078d22}
+\label{sec:org07046a3}
 
 \subsubsection{Les différents fichiers utilisés}
-\label{sec:org1102491}
+\label{sec:org6feae29}
 Pour effectuer ce travail, nous avons décidé de séparer notre programme en plusieurs fichiers : 
 
 \begin{enumerate}
@@ -107,11 +107,11 @@ Pour effectuer ce travail, nous avons décidé de séparer notre programme en pl
 
 
 \subsubsection{Les structures ainsi que les fonctions usuelles}
-\label{sec:orge2bae7b}
+\label{sec:orge854f14}
 
 \begin{enumerate}
 \item La structure de nos matrice
-\label{sec:org9733350}
+\label{sec:org4ac394c}
 
 Nous avons choisis de définir notre structure matrice de la sorte :
 
@@ -130,7 +130,7 @@ Mettre la longueur et la largeur de la matrice directement dans la structure per
 
 
 \item Les fonctions usuelles
-\label{sec:org1fd1b86}
+\label{sec:org5c846bf}
 
 
 \begin{enumerate}
@@ -270,13 +270,13 @@ matrice *multiplicationMatrice(matrice mat1, matrice mat2)
 
 
 \subsection{Gauss}
-\label{sec:org2b49530}
+\label{sec:orge305c38}
 
 \subsection{Jacobi}
-\label{sec:org68185ca}
+\label{sec:orgfd1985c}
 
 \subsubsection{Gestion des matrices non diagonales dominantes}
-\label{sec:orgd8bdd70}
+\label{sec:org2bfa832}
 
 
 Tout d'abord, pour utiliser la méthode de Jacobi, il faut que les matrices soient de la bonne taille. On vérifie donc que la matrice A est carré, que la longueur de A est égal à celle de B, ainsi que la largeur de B qui doit être égal à un. Ces conditions sont testés avec ce code :
@@ -337,7 +337,7 @@ Sinon, le reste du code est exécuté normalement.
 
 
 \subsubsection{Méthode général}
-\label{sec:org5f5c05a}
+\label{sec:org3cc6a8c}
 
 Suites à la création des matrices x, D, E, F (et N) à l'aide des fonction usuelles, il faut les initialiser avec les bonnes valeurs. On a choisit de faire un parcours de la matrice A, et lorsque les conditions sont réunies, nous entrons la valeur de A en fonction de la matrice.
 
@@ -431,25 +431,31 @@ return x;
 \end{verbatim}
 
 \subsection{Programme final}
-\label{sec:org47dda42}
+\label{sec:org2ace575}
 
 Les différentes fonctions sont appelées au fur et à mesure du main.c, en laissant le choix à l'utilisateur avec quelle matrice il veut faire ses tests, ainsi que la méthode à utiliser. Les différents choix sont regroupés dans un switch.
 
-\section{Présentation des matrices test au dos de la feuille}
-\label{sec:orgb2cb275}
 
-\href{fonction.c}{aller ici}
+
+\section{Présentation des matrices test au dos de la feuille}
+\label{sec:org2186ad6}
+
+Nous ne mettrons pas toutes les matrices test, mais vous pouvez les retrouver \href{matricetest.c}{ici}.
+
+
+
+
 
 \section{Conclusion ssur les méthodes}
-\label{sec:org1717882}
+\label{sec:orgda48e3e}
 
 \subsection{{\bfseries\sffamily TODO} Comparaison}
-\label{sec:org34dd967}
+\label{sec:orga1fc223}
 
 \subsection{{\bfseries\sffamily TODO} Cadre d'utilisation}
-\label{sec:orgb485f48}
+\label{sec:org5338251}
 
 \subsection{{\bfseries\sffamily TODO} Stabilité}
-\label{sec:org1547ee7}
+\label{sec:orge2a490a}
 Cette méthode a un coût de l'ordre de 3n2+2n par itération. Elle converge moins vite que la méthode de Gauss-Seidel, mais est très facilement parallélisable. 
 \end{document}
