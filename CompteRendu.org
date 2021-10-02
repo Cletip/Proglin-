@@ -429,21 +429,29 @@ complexité pratique= O(n)
 
 vitesse de convergence = nombre d'itération (que sur jacobi)
 
-** Conclusion ssur les méthodes 
+** Conclusion sur les méthodes 
 
 *** TODO Comparaison
 :PROPERTIES:
 :CREATED:  <2021-09-24 ven. 11:00>
 :END:
 
+
+Comme on peut le voir sur les différents jeux d'essais, Jacobi est plus efficace en temps que Gauss, car elle est de complixité coût de l'ordre de $3n^2+2n$ par itération.
+Gauss complixité = $2\frac{n^3}{3}$, car $\frac{n^2}{2}$ pour la division et $\frac{n^3}{3}$ pour la multiplication
+
+
 *** TODO Cadre d'utilisation
 :PROPERTIES:
 :CREATED:  <2021-09-24 ven. 11:00>
 :END:
+
+
+Jacob
 
 *** TODO Stabilité
 :PROPERTIES:
 :CREATED:  <2021-09-24 ven. 11:00>
 :END:
 
-Cette méthode a un coût de l'ordre de 3n2+2n par itération. Elle converge moins vite que la méthode de Gauss-Seidel, mais est très facilement parallélisable. 
+

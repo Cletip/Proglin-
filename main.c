@@ -19,6 +19,10 @@ int main()
   /* printf("Bonjours et bienvenue dans ce programme de résolution de
    * matrice.\n"); */
   /* printf("Pour voire l'aide utiliser la lettre h.\n"); */
+
+  /* Ya juste aussi à rajouter la différence par rappart à la
+     solution : faire la multiplication de A par X, et faire la
+     différence avec B */
   int compteur = 50;
   int i;
   for (i = 0; i < compteur; ++i)
@@ -28,6 +32,11 @@ int main()
 
   printf("Enlever le return 0 ");
   return 0;
+  /*  */
+
+  /*  */
+
+  /*  */
   while (choix != 'q')
   {
     printf("Que voulez vous faire ? ");
