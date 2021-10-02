@@ -408,11 +408,26 @@ Les différentes fonctions sont appelées au fur et à mesure du main.c, en lais
 Nous ne mettrons pas toutes les matrices test, mais vous pouvez les retrouver [[file:matricetest.c::{][ici]].
 
 
-De plus, les matrices test sont compatibles seulement avec Gauss. En effet, seule la matrice Km_carré avec
+De plus, les matrices test sont compatibles seulement avec Gauss. En effet, seule la matrice Km_carré avec un p petit (<= 0.3) sera dominantes.
+
+Pour tester les matrices test, il suffit de donner à A une taille n*n, puis de la remplir, grâce au programme, d'une des matrices test. Le temps d'exécution de la résolution sera donné, ainsi que la solution X.
 
 
 
 
+
+
+
+** Commentaires des jeux d'essais à partir de données relatives
+
+Donc pour résumer:
+-% d'écart = diff entre B' calculé et B donné
+-font° d'erreur = norme de Ax - b
+-vitesse de convergence = temps d'execution?
+
+complexité pratique= O(n)
+
+vitesse de convergence = nombre d'itération (que sur jacobi)
 
 ** Conclusion ssur les méthodes 
 

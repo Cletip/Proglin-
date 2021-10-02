@@ -308,6 +308,7 @@ matrice *Jacobi(matrice *A, matrice *B, float Eps, int nombremaxinte)
     erreur = Norme(soustractino(*multiplicationMatrice(*A, *x), *B));
     compteur++;
   }
+  printf("Le nombre d'itération de jacobi est de %d\n", compteur);
   return x;
 }
 

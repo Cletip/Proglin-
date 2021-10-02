@@ -15,47 +15,75 @@ int main()
   A = creerMatrice(1, 1);
   X = creerMatrice(1, 1);
   B = creerMatrice(1, 1);
-  
-  printf("Bonjours et bienvenue dans ce programme de résolution de matrice.\n");
-  printf("Pour voire l'aide utiliser la lettre h.\n");
 
-  while(choix != 'q'){
-    printf("Que voulez vous faire ? ");
-    scanf("%c", &choix);getchar();
-    switch(choix){
-    case 'h' :
-      printf("    h : Afficher cette aide.\n    a : Afficher les matrices A, X et B\n    m : Multiplier 2 matrices demander ultérieurement par la commande.\n    c : Changer la taille d'une matrice.\n    r : remplir manuellement une matrice.\n    f : Remplissage automatique d'une matrice.\n    j : Résoudre AX = B avec la méthode de Jacobi.\n    g : Résoudre AX = B avec la méthode de Gauss(Pas encore optimisé).\n    q : Quitter.\n\n");
-      break;
-    case 'g' : X = casGauss(A, B, X);break;
-    case 'j' : X = casJacobi(A, B, X);afficheMatrice(*X);break;
-    case 'f' : casAutoFill(A, B, X);break;
-    case 'm' : casMultiplication(A, B, X);
-      break;
-    case 'c' : casResize(A, B, X);break;
-    case 'r' : casRempli(A, B, X);break;
-    case 'a' : printf("La matrice A est :\n");afficheMatrice(*A);printf("La matrice X est :\n");afficheMatrice(*X);printf("La matrice B est :\n");afficheMatrice(*B);break;
-    case 'q' : printf("Au revoir!!!\n");break;
-    default : printf("Toutes les lettres a rentrés (excepté les noms de matrices) sont en minuscule. Utiliser h pour savoir quels sont vos choix.\n\n");getchar();break;
-    }
-    
+  /* printf("Bonjours et bienvenue dans ce programme de résolution de
+   * matrice.\n"); */
+  /* printf("Pour voire l'aide utiliser la lettre h.\n"); */
+  int compteur = 50;
+  int i;
+  for (i = 0; i < compteur; ++i)
+  {
   }
+  printf("Test\n");
 
+  printf("Enlever le return 0 ");
+  return 0;
+  while (choix != 'q')
+  {
+    printf("Que voulez vous faire ? ");
+    scanf("%c", &choix);
+    getchar();
+    switch (choix)
+    {
+    case 'h':
+      printf("    h : Afficher cette aide.\n    a : Afficher les matrices A, X "
+             "et B\n    m : Multiplier 2 matrices demander ultérieurement par "
+             "la commande.\n    c : Changer la taille d'une matrice.\n    r : "
+             "remplir manuellement une matrice.\n    f : Remplissage "
+             "automatique d'une matrice.\n    j : Résoudre AX = B avec la "
+             "méthode de Jacobi.\n    g : Résoudre AX = B avec la méthode de "
+             "Gauss(Pas encore optimisé).\n    q : Quitter.\n\n");
+      break;
+    case 'g':
+      X = casGauss(A, B, X);
+      break;
+    case 'j':
+      X = casJacobi(A, B, X);
+      afficheMatrice(*X);
+      break;
+    case 'f':
+      casAutoFill(A, B, X);
+      break;
+    case 'm':
+      casMultiplication(A, B, X);
+      break;
+    case 'c':
+      casResize(A, B, X);
+      break;
+    case 'r':
+      casRempli(A, B, X);
+      break;
+    case 'a':
+      printf("La matrice A est :\n");
+      afficheMatrice(*A);
+      printf("La matrice X est :\n");
+      afficheMatrice(*X);
+      printf("La matrice B est :\n");
+      afficheMatrice(*B);
+      break;
+    case 'q':
+      printf("Au revoir!!!\n");
+      break;
+    default:
+      printf("Toutes les lettres a rentrés (excepté les noms de matrices) sont "
+             "en minuscule. Utiliser h pour savoir quels sont vos choix.\n\n");
+      getchar();
+      break;
+    }
+  }
 
   // TODO : Ajouter , soustraire,  Mettre une matrice echelonné avec gauss,
   // inverse de matrice, norme d'une colonne
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   /*
   int estAdiagdomine = 0;
@@ -94,17 +122,17 @@ int main()
   e->Mat[0][1] = 3;
   e->Mat[1][0] = 2;
   e->Mat[1][1] = 5;
-  //afficheMatrice(*t); 
+  //afficheMatrice(*t);
 
   matrice *s = Gauss(*t);
 
-  // afficheMatrice(*s); 
+  // afficheMatrice(*s);
 
   matrice *a = creerMatrice(4, 4);
   remplisAleaBcpZero(a);
-  // afficheMatrice(*a); 
+  // afficheMatrice(*a);
   InversematriceD(4, a);
-  //afficheMatrice(*a); 
+  //afficheMatrice(*a);
 
   matrice *x = Jacobi(e, f, 0.0001, 200);
   afficheMatrice(*x);
@@ -139,7 +167,7 @@ matrice *casGauss(matrice *A, matrice *B, matrice *X)
   X = ResolutionParGauss(*A, *B);
 
   t2 = clock();
-  temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
+  temps = (float)(t2 - t1);
   printf("Temps d'exécution de la résolution = %f\n", temps);
 
   if (X != NULL)
@@ -201,7 +229,7 @@ matrice *casJacobi(matrice *A, matrice *B, matrice *X)
   t1 = clock();
   X = Jacobi(A, B, atof(s), max);
   t2 = clock();
-  temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
+  temps = (float)(t2 - t1);
   printf("Temps d'exécution de la résolution = %f \n", temps);
 
   if (X != NULL)
