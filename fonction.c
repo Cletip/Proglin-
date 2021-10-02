@@ -294,10 +294,11 @@ matrice *Jacobi(matrice *A, matrice *B, float Eps, int nombremaxinte)
   /* } */
 
   float erreur = Eps + 1;
+  int compteur = 0;
   InversematriceD(D->longueur, D);
 
   /* while ((pow(sigma, k)) >= sigma) */
-  while (erreur > Eps)
+  while ((erreur > Eps) && (nombremaxinte < compteur))
   {
     // nouvelle valeur de x selon la formule
     x = multiplicationMatrice(
@@ -305,6 +306,7 @@ matrice *Jacobi(matrice *A, matrice *B, float Eps, int nombremaxinte)
 
     // TODO: retirer cette ligne qui annule juste la boucle infini
     erreur = Norme(soustractino(*multiplicationMatrice(*A, *x), *B));
+    compteur++;
   }
   return x;
 }

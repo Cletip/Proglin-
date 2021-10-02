@@ -127,57 +127,95 @@ int main()
   return 0;
 }
 
-
-matrice *casGauss(matrice *A, matrice *B, matrice *X){
+matrice *casGauss(matrice *A, matrice *B, matrice *X)
+{
   destroyMatrice(X);
+
+  float temps;
+  clock_t t1, t2;
+
+  t1 = clock();
+
   X = ResolutionParGauss(*A, *B);
 
-  if(X != NULL){
+  t2 = clock();
+  temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
+  printf("Temps d'exécution de la résolution = %f\n", temps);
+
+  if (X != NULL)
+  {
     printf("Le résultat est stocké dans X, et est :\n");
     afficheMatrice(*X);
-  }else {
+  }
+  else
+  {
     printf("Il y a eu une erreur, la matrice X a été réinitialisé.\n");
     X = creerMatrice(1, 1);
   }
   return X;
 }
 
-matrice *casJacobi(matrice *A, matrice *B, matrice *X){
+matrice *casJacobi(matrice *A, matrice *B, matrice *X)
+{
   int chiffrenotok = 1;
   int curseur;
   char s[50];
   int max = 0;
 
-  
-  while(chiffrenotok){
-    printf("Veuillez entrez la valeur de epsilon( soit la marge d’erreur accepté) : ");
-    scanf("%s", s);getchar();
+  while (chiffrenotok)
+  {
+    printf("Veuillez entrez la valeur de epsilon( soit la marge d’erreur "
+           "accepté) : ");
+    scanf("%s", s);
+    getchar();
     curseur = 0;
     chiffrenotok = 0;
-    while(s[curseur] != '\0'){
-      if(s[curseur] == ',' || s[curseur] == '.'){
-	s[curseur] = '.';
-      }else if(!isdigit(s[curseur])){
-	chiffrenotok = 1;
-	break;
+    while (s[curseur] != '\0')
+    {
+      if (s[curseur] == ',' || s[curseur] == '.')
+      {
+        s[curseur] = '.';
+      }
+      else if (!isdigit(s[curseur]))
+      {
+        chiffrenotok = 1;
+        break;
       }
       curseur++;
     }
   }
 
-  printf("Entrez maintenant le nombre maximum de répétition souhaité(un nombre entier positif) : ");
-  while(max < 1){scanf("%d", &max);getchar();}
-	
-  
+  printf("Entrez maintenant le nombre maximum de répétition souhaité(un nombre "
+         "entier positif) : ");
+  while (max < 1)
+  {
+    scanf("%d", &max);
+    getchar();
+  }
+
   destroyMatrice(X);
+
+  float temps;
+  clock_t t1, t2;
+
+  t1 = clock();
   X = Jacobi(A, B, atof(s), max);
-  
-  printf("En cas d'aucune erreur, le résultat est stocké dans X, et est :\n");
-  afficheMatrice(*X);
+  t2 = clock();
+  temps = (float)(t2 - t1) / CLOCKS_PER_SEC;
+  printf("Temps d'exécution de la résolution = %f \n", temps);
+
+  if (X != NULL)
+  {
+    printf("Le résultat est stocké dans X, et est :\n");
+    afficheMatrice(*X);
+  }
+
+  /* printf("En cas d'aucune erreur, le résultat est stocké dans X, et est
+   * :\n"); */
+  /* afficheMatrice(*X); */
 
   return X;
 }
-
 
 void rempliAuto(matrice *A){
   char choix;

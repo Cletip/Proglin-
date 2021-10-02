@@ -408,6 +408,9 @@ Les différentes fonctions sont appelées au fur et à mesure du main.c, en lais
 Nous ne mettrons pas toutes les matrices test, mais vous pouvez les retrouver [[file:matricetest.c::{][ici]].
 
 
+De plus, les matrices test sont compatibles seulement avec Gauss. En effet, seule la matrice Km_carré avec
+
+
 
 
 
