@@ -52,7 +52,13 @@ void afficheMatrice(matrice mat)
   {
     for (int j = 0; j < mat.largeur; j++)
     {
-      printf("%LF ", mat.Mat[i][j]);
+      if(i == j){
+	printf("\033[0;31m"); 
+	printf("%7.3LF ", mat.Mat[i][j]);
+	printf("\033[0m");
+      }else{
+	printf("%7.3LF ", mat.Mat[i][j]);
+      }
     }
     printf("\n");
   }
@@ -92,6 +98,20 @@ void remplisAleaInt(matrice *mat){
     for(int j = 0; j < mat->largeur; j++){
       mat->Mat[i][j] = (long double)((int)(((float)rand()/RAND_MAX*2.0-1.0)*100));
     }
+  }
+}
+
+void remplisAleaDiagonalDominante(matrice *mat){
+  int somme;
+  for(int i = 0; i < mat->longueur; i++){
+    somme = 0;
+    for(int j = 0; j < mat->largeur; j++){
+      if(i != j){
+	mat->Mat[i][j] = ((long double)rand()/RAND_MAX*2.0-1.0)*100;
+	somme += fabsl(mat->Mat[i][j]);
+      }
+    }
+    mat->Mat[i][i] = somme + fabsl(((long double)rand()/RAND_MAX*2.0-1.0)*100);
   }
 }
 
@@ -323,11 +343,12 @@ matrice *Gauss(matrice mat){
   /* initialisation des valeurs utile a la résolution de la methode de gauss*/
   long double lambda;
   int n = mat.largeur;
-  int ThisLineOk = 0;
   matrice *res = creerMatrice(n, n);
+  int okayDiag = 0;
 
-  /* copie de la matrice passé en parametre dans une matrice qui poura etre
-   * retourné*/
+  /* copie de la matrice passé en paramètre dans une matrice qui pourra être
+   * retournée
+   */
   for (int i = 0; i < n; i++)
   {
     for (int j = 0; j < n; j++)
@@ -337,62 +358,56 @@ matrice *Gauss(matrice mat){
   }
 
   /* échange des lignes de la matrice afin d'enler tout les 0 de la diagonale et
-   * cas d'echec si c'est impossible  (TODO : upgrade this)*/
-  for (int i = 0; i < n; i++)
-  {
-    if (res->Mat[i][i] == 0)
-    {
-      for (int j = 0; j < n; j++)
-      {
-        if (((res->Mat[j][i] != 0) && (res->Mat[i][j] != 0) && (j < i)) ||
-            ((j > i) && (res->Mat[j][i] != 0)))
-        {
-          for (int k = 0; k < n; k++)
-          {
-            lambda = res->Mat[j][k];
-            res->Mat[j][k] = res->Mat[i][k];
-            res->Mat[i][k] = lambda;
-          }
-          break;
-        }
-        else if (j == n - 1)
-        {
-          ThisLineOk = 0;
-          for (int k = 0; (k < i) && (ThisLineOk == 0); k++)
-          {
-            if (res->Mat[k][i] != 0)
-            {
-              for (int h = i + 1; (h < n) && (ThisLineOk == 0); h++)
-              {
-                if (res->Mat[h][k] != 0)
-                {
-                  for (int p = 0; (p < n) && (ThisLineOk == 0); p++)
-                  {
-                    lambda = res->Mat[k][p];
-                    res->Mat[k][p] = res->Mat[h][p];
-                    res->Mat[h][p] = res->Mat[i][p];
-                    res->Mat[i][p] = lambda;
-                  }
-                  ThisLineOk = 1;
-                }
-              }
-            }
-          }
-          if (!ThisLineOk)
-          {
-            afficheMatrice(*res);
-            printf("Le probleme est pour la ligne %d ou on auras forcement un "
-                   "zéro...\n",
-                   i + 1);
-            printf("Ne marche pas sur cette matrice car la diagonale a "
-                   "forcement au moins 1 zéro...\n\n");
-            return res;
-          }
-        }
+   * cas d’échec si c'est impossible
+   */
+  for(int i = 0; i < n; i++){
+    if(res->Mat[i][i] == 0){
+      okayDiag++;
+    }
+  }
+  while(okayDiag){
+    int change = 0;
+    for(int i = 0; i < n; i++){
+      if(res->Mat[i][i] == 0){
+	for(int j = 0; j < n; j++){
+	  if(j < i){
+	    if(res->Mat[i][j] != 0 && res->Mat[j][i] != 0){
+	      swapLine(res, i, j);
+	      okayDiag--;
+	      change++;
+	      break;
+	    }
+	  }else if(j > i){
+	    if(res->Mat[j][i] != 0){
+	      if(res->Mat[i][j] != 0){
+		okayDiag--;
+	      }
+	      swapLine(res, i, j);
+	      change++;
+	      break;
+	    }
+	  }
+	  
+	}
+      }
+    }
+    if(change == 0){
+      okayDiag = 0;
+      for(int i = 0; i < n; i++){
+	if(res->Mat[i][i] == 0){
+	  okayDiag++;
+	}
+      }
+      if(okayDiag){
+	printf("La matrice ne peut avoir de diagonale sans zéros...\n");
+	return res;
       }
     }
   }
 
+  
+
+  
   /* application du theoreme de gauss sur la matrice*/
   for (int i = 0; i < n; i++)
   {
@@ -405,13 +420,27 @@ matrice *Gauss(matrice mat){
       }
     }
     lambda = res->Mat[i][i];
-    for (int k = 0; k < n; k++)
+    for (int k = i; k < n; k++)
     {
       res->Mat[i][k] = res->Mat[i][k] / lambda;
     }
   }
   /* renvoie du resultat */
   return res;
+}
+
+void swapLine(matrice *mat, int a, int b){
+  //  long double temp;
+  //for(int i = 0; i < mat->largeur; i++){
+  //  temp = mat->Mat[a][i];
+  //  mat->Mat[a][i] = mat->Mat[b][i];
+  //  mat->Mat[b][i] = temp;
+  //}
+
+  long double *tempo;
+  tempo = mat->Mat[a];
+  mat->Mat[a] = mat->Mat[b];
+  mat->Mat[b] = tempo;  
 }
 
 matrice *ResolutionParGauss(matrice mat, matrice B)
@@ -426,10 +455,12 @@ matrice *ResolutionParGauss(matrice mat, matrice B)
   /* initialisation des valeurs utile a la résolution de la methode de gauss*/
   long double lambda;
   int n = mat.largeur;
-  int ThisLineOk = 0;
+  int okayDiag = 0;
   matrice *res = creerMatrice(1, n);
   matrice *A = creerMatrice(mat.largeur, mat.largeur);
 
+  
+  
   for (int i = 0; i < mat.largeur; i++)
   {
     for (int j = 0; j < mat.longueur; j++)
@@ -445,70 +476,75 @@ matrice *ResolutionParGauss(matrice mat, matrice B)
     res->Mat[j][0] = B.Mat[j][0];
   }
 
-  /* échange des lignes de la matrice afin d'enler tout les 0 de la diagonale et
-   * cas d'echec si c'est impossible  (TODO : upgrade this)*/
-  for (int i = 0; i < n; i++)
+  
+  for (int i = 0; i < mat.largeur; i++)
   {
-    if (A->Mat[i][i] == 0)
+    for (int j = 0; j < mat.longueur; j++)
     {
-      for (int j = 0; j < n; j++)
-      {
-        if (((A->Mat[j][i] != 0) && (A->Mat[i][j] != 0) && (j < i)) ||
-            ((j > i) && (A->Mat[j][i] != 0)))
-        {
-          for (int k = 0; k < n; k++)
-          {
-            lambda = A->Mat[j][k];
-            A->Mat[j][k] = A->Mat[i][k];
-            A->Mat[i][k] = lambda;
-          }
-          lambda = res->Mat[j][0];
-          res->Mat[j][0] = res->Mat[i][0];
-          res->Mat[i][0] = lambda;
-          break;
-        }
-        else if (j == n - 1)
-        {
-          ThisLineOk = 0;
-          for (int k = 0; (k < i) && (ThisLineOk == 0); k++)
-          {
-            if (A->Mat[k][i] != 0)
-            {
-              for (int h = i + 1; (h < n) && (ThisLineOk == 0); h++)
-              {
-                if (A->Mat[h][k] != 0)
-                {
-                  for (int p = 0; (p < n) && (ThisLineOk == 0); p++)
-                  {
-                    lambda = A->Mat[k][p];
-                    A->Mat[k][p] = A->Mat[h][p];
-                    A->Mat[h][p] = A->Mat[i][p];
-                    A->Mat[i][p] = lambda;
-                  }
-                  lambda = A->Mat[k][0];
-                  res->Mat[k][0] = res->Mat[h][0];
-                  res->Mat[h][0] = res->Mat[i][0];
-                  res->Mat[i][0] = lambda;
-                  ThisLineOk = 1;
-                }
-              }
-            }
-          }
-          if (!ThisLineOk)
-          {
-            afficheMatrice(*A);
-            printf("Le probleme est pour la ligne %d ou on auras forcement un "
-                   "zéro...\n",
-                   i + 1);
-            printf("Ne marche pas sur cette matrice car la diagonale a "
-                   "forcement au moins 1 zéro...\n\n");
-            return res;
-          }
-        }
+      A->Mat[i][j] = mat.Mat[i][j];
+    }
+  }
+
+  /* copi de la matrice passé en parametre dans une matrice qui poura etre
+   * retourné*/
+  for (int j = 0; j < n; j++)
+  {
+    res->Mat[j][0] = B.Mat[j][0];
+  }
+
+
+  /* échange des lignes de la matrice afin d'enler tout les 0 de la diagonale et
+   * cas d’échec si c'est impossible
+   */
+  for(int i = 0; i < n; i++){
+    if(A->Mat[i][i] == 0){
+      okayDiag++;
+    }
+  }
+  while(okayDiag){
+    int change = 0;
+    for(int i = 0; i < n; i++){
+      if(A->Mat[i][i] == 0){
+	for(int j = 0; j < n; j++){
+	  if(j < i){
+	    if(A->Mat[i][j] != 0 && A->Mat[j][i] != 0){
+	      swapLine(A, i, j);
+	      swapLine(res, i, j);
+	      okayDiag--;
+	      change++;
+	      break;
+	    }
+	  }else if(j > i){
+	    if(A->Mat[j][i] != 0){
+	      if(A->Mat[i][j] != 0){
+		okayDiag--;
+	      }
+	      swapLine(A, i, j);
+	      swapLine(res, i, j);
+	      change++;
+	      break;
+	    }
+	  }
+	  
+	}
+      }
+    }
+    if(change == 0){
+      okayDiag = 0;
+      for(int i = 0; i < n; i++){
+	if(A->Mat[i][i] == 0){
+	  okayDiag++;
+	}
+      }
+      if(okayDiag){
+	printf("La matrice ne peut avoir de diagonale sans zéros...\n");
+	destroyMatrice(res);
+	return A;
       }
     }
   }
 
+  
   /* application du theoreme de gauss sur la matrice augmenté AB*/
   for (int i = 0; i < n; i++)
   {
