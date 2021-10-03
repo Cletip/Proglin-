@@ -240,7 +240,129 @@ matrice *multiplicationMatrice(matrice mat1, matrice mat2)
 
 
 
-*** Gauss
+*** TODO Gauss
+:PROPERTIES:
+:CREATED:  <2021-10-03 dim. 18:49>
+:END:
+
+**** Gestion des 0 sur la diagonale
+
+Tout d'abord, cette méthode requiert des nombres non nul sur la diagonale. Il faut donc tester, en échangeant certaines lignes, si il est possible d'obtenir une matrice avec aucun 0 sur les diagonales
+
+#+begin_src C
+  
+  int okayDiag = 0;
+  
+  
+  /* on compte le nombre de 0 sur la diagonale */
+  for (int i = 0; i < n; i++)
+  {
+    if (res->Mat[i][i] == 0)
+    {
+      okayDiag++;
+    }
+  }
+  while (okayDiag)
+  {
+    int change = 0;
+    for (int i = 0; i < n; i++)
+    {
+      if (res->Mat[i][i] == 0)
+      {
+	for (int j = 0; j < n; j++)
+	{
+	  if (j < i)
+	  {
+	    if (res->Mat[i][j] != 0 && res->Mat[j][i] != 0)
+	    {
+	      swapLine(res, i, j);
+	      okayDiag--;
+	      change++;
+	      break;
+	    }
+	  }
+	  else if (j > i)
+	  {
+	    if (res->Mat[j][i] != 0)
+	    {
+	      if (res->Mat[i][j] != 0)
+	      {
+		okayDiag--;
+	      }
+	      swapLine(res, i, j);
+	      change++;
+	      break;
+	    }
+	  }
+	}
+      }
+    }
+    if (change == 0)
+    {
+      okayDiag = 0;
+      for (int i = 0; i < n; i++)
+      {
+	if (res->Mat[i][i] == 0)
+	{
+	  okayDiag++;
+	}
+      }
+      if (okayDiag)
+      {
+	printf("La matrice ne peut avoir de diagonale sans zéros...\n");
+	return res;
+      }
+    }
+  }
+  
+#+end_src
+
+**** Application de la méthode
+Puis, on peut appliquer la méthode de Gauss sur la matrice augmentée AB
+
+#+begin_src C
+  
+  for (int i = 0; i < n; i++)
+  {
+    for (int j = 0; j < i; j++)
+    {
+      lambda = -(A->Mat[i][j]);
+      for (int k = 0; k < n; k++)
+      {
+	A->Mat[i][k] = lambda * A->Mat[j][k] + A->Mat[i][k];
+      }
+      res->Mat[i][0] = lambda * res->Mat[j][0] + res->Mat[i][0];
+    }
+    lambda = A->Mat[i][i];
+    for (int k = 0; k < n; k++)
+    {
+      A->Mat[i][k] = A->Mat[i][k] / lambda;
+    }
+    res->Mat[i][0] = res->Mat[i][0] / lambda;
+  }
+  
+  
+  
+  
+#+end_src
+
+**** Application de calcul simple 
+Enfin, on peut appliquer le calcul simple sur matrice augmenté obtenue pour obtenir le résultat dans X
+
+#+begin_src C
+  
+  for (int i = n - 2; i > -1; i--)
+    {
+      lambda = 0;
+      for (int j = i + 1; j < n; j++)
+	{
+	  lambda -= (A->Mat[i][j] * res->Mat[j][0]);
+	}
+      res->Mat[i][0] += lambda;
+    }
+  
+#+end_src
+
 
 *** Jacobi
 
@@ -306,6 +428,8 @@ Sinon, le reste du code est exécuté normalement.
 
 **** Méthode général
 
+***** Initialisation des différentes matrices nécessaires 
+
 Suites à la création des matrices x, D, E, F (et N) à l'aide des fonction usuelles, il faut les initialiser avec les bonnes valeurs. On a choisit de faire un parcours de la matrice A, et lorsque les conditions sont réunies, nous entrons la valeur de A en fonction de la matrice.
 
 #+begin_src C
@@ -339,6 +463,10 @@ Suites à la création des matrices x, D, E, F (et N) à l'aide des fonction usu
   
   #+end_src
 
+
+
+***** Inversion de la matrice D
+  
 Puis, on initialise la marge d'erreur. Nous inversons également D (avec la fonction /InversematriceD/), car il faut utiliser $D^{-1}$
 
   
@@ -365,9 +493,13 @@ Puis, on initialise la marge d'erreur. Nous inversons également D (avec la fonc
 	
     #+end_src
 
+
+
+    
+***** Méthode de Jacobi appliquée
 Enfin, nous programmons la méthode de Jacobi grâce aux fonctions "multiplicationMatrice, additionMatrice".
 La boucle utiliser est un tant que, car nous ne savons pas quand la marge d'erreur sera respecté pour sortir de la boucle while.
-La variable erreur doit également être mise à jour à chaque passage dans la boucle, en utilisant la fonction /Norme/.
+La variable /erreur/ doit également être mise à jour à chaque passage dans la boucle, en utilisant la fonction /Norme/.
 
 
     
@@ -399,7 +531,7 @@ La variable erreur doit également être mise à jour à chaque passage dans la 
 
 *** Programme final
 
-Les différentes fonctions sont appelées au fur et à mesure du main.c, en laissant le choix à l'utilisateur avec quelle matrice il veut faire ses tests, ainsi que la méthode à utiliser. Les différents choix sont regroupés dans un switch.
+Les différentes fonctions sont appelées au fur et à mesure du main.c, en laissant le choix à l'utilisateur des matrices qu'il veut testes, ainsi que la méthode à utiliser pour la résolution. Les différents choix sont regroupés dans un switch.
 
 
 
@@ -410,7 +542,7 @@ Nous ne mettrons pas toutes les matrices test, mais vous pouvez les retrouver [[
 
 De plus, les matrices test sont compatibles seulement avec Gauss. En effet, seule la matrice Km_carré avec un p petit (<= 0.3) sera dominantes.
 
-Pour tester les matrices test, il suffit de donner à A une taille n*n, puis de la remplir, grâce au programme, d'une des matrices test. Le temps d'exécution de la résolution sera donné, ainsi que la solution X.
+Pour tester les matrices test, il suffit de donner à A une taille n*n, puis de la remplir grâce au programme de la matrice test voulue. Le temps d'exécution de la résolution sera ainsi donné, avec la solution X.
 
 
 
@@ -418,7 +550,10 @@ Pour tester les matrices test, il suffit de donner à A une taille n*n, puis de 
 
 
 
-** Commentaires des jeux d'essais à partir de données relatives
+** TODO Commentaires des jeux d'essais à partir de données relatives [0/4]
+:PROPERTIES:
+:CREATED:  <2021-10-03 dim. 18:48>
+:END:
 
 Donc pour résumer:
 -% d'écart = diff entre B' calculé et B donné
@@ -429,16 +564,39 @@ complexité pratique= O(n)
 
 vitesse de convergence = nombre d'itération (que sur jacobi)
 
+
+*** NEXT Pourcentage d'écart (précision)
+:PROPERTIES:
+:CREATED:  <2021-10-03 dim. 18:58>
+:END:
+
+*** TODO Calcul de fonction d'erreurs
+:PROPERTIES:
+:CREATED:  <2021-10-03 dim. 18:58>
+:END:
+
+*** TODO Vitesse de convergence
+:PROPERTIES:
+:CREATED:  <2021-10-03 dim. 18:58>
+:END:
+
+*** TODO Complexité pratique (plus qu'à mettre)
+:PROPERTIES:
+:CREATED:  <2021-10-03 dim. 18:58>
+:END:
+
+
 ** Conclusion sur les méthodes 
 
-*** TODO Comparaison
+*** Comparaison
 :PROPERTIES:
 :CREATED:  <2021-09-24 ven. 11:00>
 :END:
 
 
-Comme on peut le voir sur les différents jeux d'essais, Jacobi est plus efficace en temps que Gauss, car elle est de complixité coût de l'ordre de $3n^2+2n$ par itération.
-Gauss complixité = $2\frac{n^3}{3}$, car $\frac{n^2}{2}$ pour la division et $\frac{n^3}{3}$ pour la multiplication
+Comme on peut le voir sur les différents jeux d'essais, Jacobi est plus efficace que Gauss, car sa complixité est $3n^2+2n$ par itération, et donc d'ordre $O(n^2)$, tandis que Gauss a une complixité égale à $2\frac{n^3}{3}$, car $\frac{n^2}{2}$ pour la division, et $\frac{n^3}{3}$ pour la multiplication.
+Gauss a donc une complexité d'ordre $O(n^3)$.
+Malgré tout, il existe des cas où la méthode de Jacobi prendra plus de temps : Il suffit de donner un $\epsilon$ trés petit, et donc d'augmenter la précision du résultat voulu, pour entraîner un nombre d'itération trop conséquent pour effectuer le calcul.
 
 
 *** TODO Cadre d'utilisation
@@ -447,7 +605,8 @@ Gauss complixité = $2\frac{n^3}{3}$, car $\frac{n^2}{2}$ pour la division et $\
 :END:
 
 
-Jacob
+
+
 
 *** TODO Stabilité
 :PROPERTIES:

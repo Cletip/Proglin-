@@ -332,7 +332,8 @@ matrice *Jacobi(matrice *A, matrice *B, float Eps, int nombremaxinte)
   return x;
 }
 
-matrice *Gauss(matrice mat){
+matrice *Gauss(matrice mat)
+{
   /* gestion du cas d'erreur ou la matrice n'est pas carré*/
   if (mat.longueur != mat.largeur)
   {
@@ -360,54 +361,66 @@ matrice *Gauss(matrice mat){
   /* échange des lignes de la matrice afin d'enler tout les 0 de la diagonale et
    * cas d’échec si c'est impossible
    */
-  for(int i = 0; i < n; i++){
-    if(res->Mat[i][i] == 0){
+  for (int i = 0; i < n; i++)
+  {
+    if (res->Mat[i][i] == 0)
+    {
       okayDiag++;
     }
   }
-  while(okayDiag){
+  while (okayDiag)
+  {
     int change = 0;
-    for(int i = 0; i < n; i++){
-      if(res->Mat[i][i] == 0){
-	for(int j = 0; j < n; j++){
-	  if(j < i){
-	    if(res->Mat[i][j] != 0 && res->Mat[j][i] != 0){
-	      swapLine(res, i, j);
-	      okayDiag--;
-	      change++;
-	      break;
-	    }
-	  }else if(j > i){
-	    if(res->Mat[j][i] != 0){
-	      if(res->Mat[i][j] != 0){
-		okayDiag--;
-	      }
-	      swapLine(res, i, j);
-	      change++;
-	      break;
-	    }
-	  }
-	  
-	}
+    for (int i = 0; i < n; i++)
+    {
+      if (res->Mat[i][i] == 0)
+      {
+        for (int j = 0; j < n; j++)
+        {
+          if (j < i)
+          {
+            if (res->Mat[i][j] != 0 && res->Mat[j][i] != 0)
+            {
+              swapLine(res, i, j);
+              okayDiag--;
+              change++;
+              break;
+            }
+          }
+          else if (j > i)
+          {
+            if (res->Mat[j][i] != 0)
+            {
+              if (res->Mat[i][j] != 0)
+              {
+                okayDiag--;
+              }
+              swapLine(res, i, j);
+              change++;
+              break;
+            }
+          }
+        }
       }
     }
-    if(change == 0){
+    if (change == 0)
+    {
       okayDiag = 0;
-      for(int i = 0; i < n; i++){
-	if(res->Mat[i][i] == 0){
-	  okayDiag++;
-	}
+      for (int i = 0; i < n; i++)
+      {
+        if (res->Mat[i][i] == 0)
+        {
+          okayDiag++;
+        }
       }
-      if(okayDiag){
-	printf("La matrice ne peut avoir de diagonale sans zéros...\n");
-	return res;
+      if (okayDiag)
+      {
+        printf("La matrice ne peut avoir de diagonale sans zéros...\n");
+        return res;
       }
     }
   }
 
-  
-
-  
   /* application du theoreme de gauss sur la matrice*/
   for (int i = 0; i < n; i++)
   {
