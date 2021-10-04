@@ -54,7 +54,7 @@ void afficheMatrice(matrice mat)
 	printf("%7.3LF ", mat.Mat[i][j]);
 	printf("\033[0m");
       }else{
-	printf("%7.3LF ", mat.Mat[i][j]);
+	printf("%12.7LF ", mat.Mat[i][j]);
       }
     }
     printf("\n");
@@ -173,7 +173,7 @@ matrice *soustractino(matrice mat1, matrice mat2)
       res = 0;
       if ((mat1.longueur > i) && (mat1.largeur > j))
       {
-        res += mat1.Mat[i][j];
+        res = mat1.Mat[i][j];
       }
       if ((mat2.longueur > i) && (mat2.largeur > j))
       {
@@ -242,7 +242,7 @@ float Norme(matrice *colonne)
   return sqrt(norme);
 }
 
-matrice *Jacobi(matrice *A, matrice *B, float Eps, int nombremaxinte)
+matrice *Jacobi(matrice *A, matrice *B, float Eps, int nombremaxinte, int *compteur)
 {
   /* gestion des cas d'erreur pouvant faire echouer la methode jacobi*/
   if ((A->largeur != A->longueur) || (A->longueur != B->longueur) ||
@@ -314,11 +314,12 @@ matrice *Jacobi(matrice *A, matrice *B, float Eps, int nombremaxinte)
   /* } */
 
   float erreur = Eps + 1;
-  int compteur = 0;
+  *compteur = 0;
   InversematriceD(D->longueur, D);
 
+  
   /* while ((pow(sigma, k)) >= sigma) */
-  while ((erreur > Eps) && (nombremaxinte < compteur))
+  while ((erreur > Eps) && (nombremaxinte > *compteur))
   {
     // nouvelle valeur de x selon la formule
     x = multiplicationMatrice(
@@ -326,14 +327,13 @@ matrice *Jacobi(matrice *A, matrice *B, float Eps, int nombremaxinte)
 
     // TODO: retirer cette ligne qui annule juste la boucle infini
     erreur = Norme(soustractino(*multiplicationMatrice(*A, *x), *B));
-    compteur++;
+    (*compteur)++;
   }
-  printf("Le nombre d'itération de jacobi est de %d\n", compteur);
+  //printf("Le nombre d'itération de jacobi est de %d\n", compteur);
   return x;
 }
 
-matrice *Gauss(matrice mat)
-{
+matrice *Gauss(matrice mat){
   /* gestion du cas d'erreur ou la matrice n'est pas carré*/
   if (mat.longueur != mat.largeur)
   {
@@ -361,66 +361,54 @@ matrice *Gauss(matrice mat)
   /* échange des lignes de la matrice afin d'enler tout les 0 de la diagonale et
    * cas d’échec si c'est impossible
    */
-  for (int i = 0; i < n; i++)
-  {
-    if (res->Mat[i][i] == 0)
-    {
+  for(int i = 0; i < n; i++){
+    if(res->Mat[i][i] == 0){
       okayDiag++;
     }
   }
-  while (okayDiag)
-  {
+  while(okayDiag){
     int change = 0;
-    for (int i = 0; i < n; i++)
-    {
-      if (res->Mat[i][i] == 0)
-      {
-        for (int j = 0; j < n; j++)
-        {
-          if (j < i)
-          {
-            if (res->Mat[i][j] != 0 && res->Mat[j][i] != 0)
-            {
-              swapLine(res, i, j);
-              okayDiag--;
-              change++;
-              break;
-            }
-          }
-          else if (j > i)
-          {
-            if (res->Mat[j][i] != 0)
-            {
-              if (res->Mat[i][j] != 0)
-              {
-                okayDiag--;
-              }
-              swapLine(res, i, j);
-              change++;
-              break;
-            }
-          }
-        }
+    for(int i = 0; i < n; i++){
+      if(res->Mat[i][i] == 0){
+	for(int j = 0; j < n; j++){
+	  if(j < i){
+	    if(res->Mat[i][j] != 0 && res->Mat[j][i] != 0){
+	      swapLine(res, i, j);
+	      okayDiag--;
+	      change++;
+	      break;
+	    }
+	  }else if(j > i){
+	    if(res->Mat[j][i] != 0){
+	      if(res->Mat[i][j] != 0){
+		okayDiag--;
+	      }
+	      swapLine(res, i, j);
+	      change++;
+	      break;
+	    }
+	  }
+	  
+	}
       }
     }
-    if (change == 0)
-    {
+    if(change == 0){
       okayDiag = 0;
-      for (int i = 0; i < n; i++)
-      {
-        if (res->Mat[i][i] == 0)
-        {
-          okayDiag++;
-        }
+      for(int i = 0; i < n; i++){
+	if(res->Mat[i][i] == 0){
+	  okayDiag++;
+	}
       }
-      if (okayDiag)
-      {
-        printf("La matrice ne peut avoir de diagonale sans zéros...\n");
-        return res;
+      if(okayDiag){
+	printf("La matrice ne peut avoir de diagonale sans zéros...\n");
+	return res;
       }
     }
   }
 
+  
+
+  
   /* application du theoreme de gauss sur la matrice*/
   for (int i = 0; i < n; i++)
   {

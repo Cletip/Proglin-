@@ -42,7 +42,7 @@ void rempliLehmer(matrice *A);
 void rempliLotkin(matrice *A);
 void rempliMoler(matrice *A);
 
-matrice *Jacobi(matrice *A, matrice *B, float Eps, int nombremaxinte);
+matrice *Jacobi(matrice *A, matrice *B, float Eps, int nombremaxinte, int *compteur);
 matrice *Gauss(matrice mat);
 matrice *ResolutionParGauss(matrice A, matrice B);
 void swapLine(matrice *mat, int a, int b);

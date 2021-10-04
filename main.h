@@ -20,5 +20,6 @@ matrice *casGauss(matrice *A, matrice *B, matrice *X);
 void rempliAuto(matrice *A);
 void rempliMain(matrice *A);
 void rempliUneCase(matrice *A);
+void casDeVerif();
 
 #endif
