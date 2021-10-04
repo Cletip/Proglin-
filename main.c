@@ -21,27 +21,9 @@ int main()
   X = creerMatrice(1, 1);
   B = creerMatrice(1, 1);
 
-  //  return 0;
+
   printf("Bonjours et bienvenue dans ce programme de résolution de matrice.\n");
   printf("Pour voire l'aide utiliser la lettre h.\n");
-
-  /* Ya juste aussi à rajouter la différence par rappart à la
-     solution : faire la multiplication de A par X, et faire la
-     différence avec B */
-  /*  int compteur = 50;
-  int i;
-  for (i = 0; i < compteur; ++i)
-  {
-  }
-  printf("Test\n");
-
-  printf("Enlever le return 0 ");
-  return 0;
-  */
-
-  /*  */
-
-  /*  */
   while (choix != 'q')
   {
     printf("Que voulez vous faire ? ");
@@ -57,7 +39,7 @@ int main()
              "automatique d'une matrice.\n    j : Résoudre AX = B avec la "
              "méthode de Jacobi.\n    g : Résoudre AX = B avec la méthode de "
              "Gauss.\n    e : rendre une matrice échelonné.\n    v : Changer "
-             "la valeur d'une case.\n    p : Putain de testes.\n    q : Quitter.\n\n");
+             "la valeur d'une case.\n    p : Testes automatiques.\n    q : Quitter.\n\n");
       break;
     case 'p': casDeVerif();break;
     case 'v':
@@ -638,18 +620,61 @@ int main()
   // TODO : Ajouter , soustraire
   // inverse de matrice,
   // norme d'une colonne
-
+ 
   return 0;
 }
 
 void casDeVerif(){
 
-  int compteur = 50;
-  int larg = 100;
+  int compteur = -1;
+  int larg = -1;
   float epsilon = 0.001;
-  int maxIter = 30;
-  
+  int maxIter = -1;
 
+  char choixA = 'A';
+  char choixB = 'A';
+  
+  int chiffrenotok = 1;
+  char s[50];
+  int curseur;
+
+  printf("Entrez le nombre de tests (un nombre entier positif) : ");
+  while(compteur < 0){scanf("%d", &compteur);getchar();}
+  printf("Entrez la taille des matrices de test (un nombre entier positif) : ");
+  while(larg < 0){scanf("%d", &larg);getchar();}
+  printf("Maintenant pour le cas de Jacobi :\n");
+ 
+  while(chiffrenotok){
+    printf("    Veuillez entrez la valeur de epsilon : ");
+    scanf("%s", s);getchar();
+    curseur = 0;
+    chiffrenotok = 0;
+    while(s[curseur] != '\0'){
+      if(s[curseur] == ',' || s[curseur] == '.'){
+	s[curseur] = '.';
+      }else if(!isdigit(s[curseur])){
+	chiffrenotok = 1;
+	break;
+      }
+      curseur++;
+    }
+  }
+  epsilon = atof(s);
+
+  printf("    Entrez le max d'itération(un nombre entier positif) : ");
+  while(maxIter < 0){scanf("%d", &maxIter);getchar();}
+
+  while((choixA != 'j') && (choixA != 'b') && (choixA != 'k') && (choixA != 'l')){
+  printf("De quelle manière voulez vous remplir la matrice A(Toute les manières possibles ici sont à diagonale dominante sinon cela fausserais complètement les résultats de la méthode de Jacobi.) ?\n        j : Aléatoirement avec la diagonale dominante.\n        b : Avec la méthode de Bord.\n        k : Avec la méthode de Kms.\n        l : Avec la méthode de Lehmer.\n");
+    scanf("%c", &choixA);getchar();
+  }
+
+  while ((choixB != 'a') && (choixB != 'i') && (choixB != 'z') && (choixB != 'j') && (choixB != 'b') && (choixB != 'd') && (choixB != 'f') && (choixB != 'n') && (choixB != 'p') && (choixB != 'k') && (choixB != 'l') && (choixB != 'o') && (choixB != 'm')){ 
+  printf("De quelle manière voulez vous remplir la matrice colonne B ?\n        a : Aléatoirement entre 100 et -100.\n        i : aléatoirement par des entiers entre 100 et -100.\n        z : Aléatoirement avec 70 pourcent de zéros.\n        j : Aléatoirement avec la diagonale dominante.\n        b : Avec la méthode de Bord.\n        d : Avec la méthode de DingDong.\n        f : Avec la méthode de Franc.\n        n : Avec la méthode de Hilbert Négative.\n        p : Avec la méthode de Hilbert Positive.\n        k : Avec la méthode de Kms.\n        l : Avec la méthode de Lehmer.\n        o : Avec la méthode de Lotkin.\n        m : Avec la méthode de Moler.\n");
+    scanf("%c", &choixB);getchar();
+}
+  printf("\n");
+  printf("\e[?25l");
   
   float tempsjaco = 0;
   float tempsgauss = 0;
@@ -669,8 +694,30 @@ void casDeVerif(){
   //boucle pour avoir plusieurs essaies
   for(int i = 0; i < compteur; ++i)
   {
-    remplisAleaDiagonalDominante(A);
-    remplisAleaInt(B);
+    switch (choixA) {
+    case 'j' : remplisAleaDiagonalDominante(A);break;
+    case 'b' : rempliBord(A);break;
+    case 'k' : rempliKms(A);break;
+    case 'l' : rempliLehmer(A);break;
+    default:printf("Il y a une erreur, %c!!!\n", choixA);break;
+    }
+
+    switch(choixB){
+    case 'a': remplisAlea(B);break;
+    case 'i': remplisAleaInt(B); break;
+    case 'z': remplisAleaBcpZero(B);break;
+    case 'j': remplisAleaDiagonalDominante(B);break;
+    case 'b': rempliBord(B);break;
+    case 'd': rempliDingDong(B);break;
+    case 'f': rempliFranc(B);break;
+    case 'n': rempliHilbertNeg(B);break;
+    case 'p': rempliHilbertPos(B);break;
+    case 'k': rempliKms(B);break;
+    case 'l': rempliLehmer(B);break;
+    case 'o': rempliLotkin(B);break;
+    case 'm': rempliMoler(B);break;
+    default:printf("Il y a une erreur, %c!!!\n", choixB);break;
+    }
     
     clock_t t1, t2;
     t1 = clock();
@@ -708,6 +755,14 @@ void casDeVerif(){
     stabjaco += tempo;
     //fonctiond'erreurjaco = norme AX - b;
     ErreurJaco += Norme(temporaire);
+
+
+    printf("\rIn progress : [");
+    for(int j = 0; j <= (int)(i*(100.0f/compteur)); j+=2){printf("#");}
+    for(int j = (int)(i*(100.0f/compteur)); j < 100; j+=2){printf(".");}
+    printf("] %d / %d", i, compteur);
+    fflush(stdout);
+    
   }
 
 //calcul des moyenne
@@ -723,7 +778,8 @@ void casDeVerif(){
   pointeur = pointeur/compteur;
   //fonctiond'erreurgauss et fonctiond'erreurjaco = fonctiond'erreurjaco et fonctiond'erreurgauss / compteur
 
-  printf("\nPour des matrices carré de taille %d, et sur un échantillon de %d, on obtient que :\n Le temps nécessaire pour gauss est : %f, avec une stabilité(différence entre le résultat obtenue et le résultat attendu) de %f, et une fonction d'erreur de %f.\n Le temps nécessaire pour Jacobi est : %f, avec une marge de stabilité(différence entre le résultat obtenue et le résultat attendu) de %f, une fonction d'erreur de %f, et un nombre moyen d'itération de %d .\n", larg, compteur, tempsgauss, stabgauss, ErreurGauss, tempsjaco, stabjaco, ErreurJaco, pointeur);
+  printf("\rPour des matrices carré de taille %d, et sur un échantillon de %d, on obtient que :\n Le temps nécessaire pour gauss est : %f secondes (%f), avec une stabilité(différence entre le résultat obtenue et le résultat attendu) de %f, et une fonction d'erreur de %f.\n Le temps nécessaire pour Jacobi est : %f secondes (%f), avec une marge de stabilité(différence entre le résultat obtenue et le résultat attendu) de %f, une fonction d'erreur de %f, et un nombre moyen d'itération de %d .\n\n", larg, compteur, (tempsgauss/1000000), tempsgauss, stabgauss, ErreurGauss, tempsjaco/1000000, tempsjaco, stabjaco, ErreurJaco, pointeur);
+  printf("\e[?25h");
 }
 
 void rempliUneCase(matrice *A){
