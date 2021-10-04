@@ -1,9 +1,6 @@
 /* toutes les fct */
 #include "fonction.h"
 #include "matricetest.c"
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 /* création d'une, renvoie un pointeur sur une matrice */
 matrice *creerMatrice(int largeur, int longueur)
@@ -107,11 +104,14 @@ void remplisAleaDiagonalDominante(matrice *mat){
     somme = 0;
     for(int j = 0; j < mat->largeur; j++){
       if(i != j){
+	
 	mat->Mat[i][j] = ((long double)rand()/RAND_MAX*2.0-1.0)*100;
 	somme += fabsl(mat->Mat[i][j]);
       }
     }
-    mat->Mat[i][i] = somme + fabsl(((long double)rand()/RAND_MAX*2.0-1.0)*100);
+    if(i < mat->largeur){
+      mat->Mat[i][i] = somme + fabsl(((long double)rand()/RAND_MAX*2.0-1.0)*100);
+    }
   }
 }
 
