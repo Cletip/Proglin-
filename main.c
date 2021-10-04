@@ -21,7 +21,7 @@ int main()
   X = creerMatrice(1, 1);
   B = creerMatrice(1, 1);
 
-  return 0;
+  //  return 0;
   printf("Bonjours et bienvenue dans ce programme de résolution de matrice.\n");
   printf("Pour voire l'aide utiliser la lettre h.\n");
 
@@ -57,8 +57,9 @@ int main()
              "automatique d'une matrice.\n    j : Résoudre AX = B avec la "
              "méthode de Jacobi.\n    g : Résoudre AX = B avec la méthode de "
              "Gauss.\n    e : rendre une matrice échelonné.\n    v : Changer "
-             "la valeur d'une case.\n    q : Quitter.\n\n");
+             "la valeur d'une case.\n    p : Putain de testes.\n    q : Quitter.\n\n");
       break;
+    case 'p': casDeVerif();break;
     case 'v':
       casUneCase(A, B, X);
       break;
@@ -641,6 +642,90 @@ int main()
   return 0;
 }
 
+void casDeVerif(){
+
+  int compteur = 50;
+  int larg = 100;
+  float epsilon = 0.001;
+  int maxIter = 30;
+  
+
+  
+  float tempsjaco = 0;
+  float tempsgauss = 0;
+  float stabjaco = 0;
+  float stabgauss = 0;
+  float tempo = 0;
+  float ErreurGauss = 0;
+  float ErreurJaco = 0;
+  int pointeur = 0;
+  int tempopointeur = 0;
+  
+  matrice *A = creerMatrice(larg, larg);
+  matrice *X;
+  matrice *B = creerMatrice(1, larg);
+  matrice *temporaire = creerMatrice(1, larg);
+  
+  //boucle pour avoir plusieurs essaies
+  for(int i = 0; i < compteur; ++i)
+  {
+    remplisAleaDiagonalDominante(A);
+    remplisAleaInt(B);
+    
+    clock_t t1, t2;
+    t1 = clock();
+    X = ResolutionParGauss(*A, *B);
+    t2 = clock();
+    
+    tempsgauss += (float)(t2 - t1);
+
+    X = multiplicationMatrice(*A, *X);
+    temporaire = soustractino(*X, *B);
+    tempo = 0;
+    for(int j = 0; j < larg; j++){
+      tempo += fabsl(temporaire->Mat[j][0]);
+    }
+    tempo = tempo/larg;
+    stabgauss += tempo;
+    
+    ErreurGauss += Norme(temporaire);
+
+    
+    t1 = clock();
+    X = Jacobi(A, B, epsilon, maxIter, &tempopointeur);
+    t2 = clock();
+
+    pointeur+= tempopointeur;
+    tempsjaco += (float)(t2 - t1);
+
+    X = multiplicationMatrice(*A, *X);
+    temporaire = soustractino(*X, *B);
+    tempo = 0;
+    for(int j = 0; j < larg; j++){
+      tempo += fabsl(temporaire->Mat[j][0]);
+    }
+    tempo = tempo/larg;
+    stabjaco += tempo;
+    //fonctiond'erreurjaco = norme AX - b;
+    ErreurJaco += Norme(temporaire);
+  }
+
+//calcul des moyenne
+  tempsjaco = tempsjaco/compteur;
+  tempsgauss = tempsgauss/compteur;
+  
+  stabgauss = stabgauss/compteur;
+  stabjaco = stabjaco / compteur;
+
+  ErreurGauss = ErreurGauss/compteur;
+  ErreurJaco = ErreurJaco/compteur;
+
+  pointeur = pointeur/compteur;
+  //fonctiond'erreurgauss et fonctiond'erreurjaco = fonctiond'erreurjaco et fonctiond'erreurgauss / compteur
+
+  printf("\nPour des matrices carré de taille %d, et sur un échantillon de %d, on obtient que :\n Le temps nécessaire pour gauss est : %f, avec une stabilité(différence entre le résultat obtenue et le résultat attendu) de %f, et une fonction d'erreur de %f.\n Le temps nécessaire pour Jacobi est : %f, avec une marge de stabilité(différence entre le résultat obtenue et le résultat attendu) de %f, une fonction d'erreur de %f, et un nombre moyen d'itération de %d .\n", larg, compteur, tempsgauss, stabgauss, ErreurGauss, tempsjaco, stabjaco, ErreurJaco, pointeur);
+}
+
 void rempliUneCase(matrice *A){
   int a = -1;
   int b = -1;
@@ -740,15 +825,10 @@ matrice *casJacobi(matrice *A, matrice *B, matrice *X)
 	
   
   destroyMatrice(X);
+  int a = 0;
 
-  float temps;
-  clock_t t1, t2;
+  X = Jacobi(A, B, atof(s), max, &a);
 
-  t1 = clock();
-  X = Jacobi(A, B, atof(s), max);
-  t2 = clock();
-  temps = (float)(t2 - t1);
-  printf("Temps d'exécution de la résolution = %f \n", temps);
 
   if (X != NULL)
   {
