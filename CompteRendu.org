@@ -245,6 +245,11 @@ matrice *multiplicationMatrice(matrice mat1, matrice mat2)
 :CREATED:  <2021-10-03 dim. 18:49>
 :END:
 
+Gauss : échelonne une matrice
+
+Résolution gauss = matrice A augmenté
+
+
 **** Gestion des 0 sur la diagonale
 
 Tout d'abord, cette méthode requiert des nombres non nul sur la diagonale. Il faut donc tester, en échangeant certaines lignes, si il est possible d'obtenir une matrice avec aucun 0 sur les diagonales
@@ -542,7 +547,8 @@ Nous ne mettrons pas toutes les matrices test, mais vous pouvez les retrouver [[
 
 De plus, les matrices test sont compatibles seulement avec Gauss. En effet, seule la matrice Km_carré avec un p petit (<= 0.3) sera dominantes.
 
-Pour tester les matrices test, il suffit de donner à A une taille n*n, puis de la remplir grâce au programme de la matrice test voulue. Le temps d'exécution de la résolution sera ainsi donné, avec la solution X.
+Pour tester les matrices test, il suffit de donner à A une taille n*n, puis de la remplir grâce au programme de la matrice test voulue. Le temps d'exécution de la résolution sera ainsi donné, avec la solution X. De plus, si la méthode choisie est la résolution par Jacobi, le nombre d'itération sera aussi affiché.
+
 
 
 

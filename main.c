@@ -16,13 +16,14 @@ int main()
 
   char valeurTemporaire;
   matrice *temporaire;
-  
+
   A = creerMatrice(1, 1);
   X = creerMatrice(1, 1);
   B = creerMatrice(1, 1);
 
-  printf("Bonjours et bienvenue dans ce programme de résolution de matrice.\n"); 
-  printf("Pour voire l'aide utiliser la lettre h.\n"); 
+  return 0;
+  printf("Bonjours et bienvenue dans ce programme de résolution de matrice.\n");
+  printf("Pour voire l'aide utiliser la lettre h.\n");
 
   /* Ya juste aussi à rajouter la différence par rappart à la
      solution : faire la multiplication de A par X, et faire la
@@ -44,172 +45,592 @@ int main()
   while (choix != 'q')
   {
     printf("Que voulez vous faire ? ");
-    scanf("%c", &choix);getchar();
-    switch(choix){
-    case 'h' :
-      printf("    h : Afficher cette aide.\n    a : Afficher les matrices A, X et B\n    m : Multiplier 2 matrices demander ultérieurement par la commande.\n    c : Changer la taille d'une matrice.\n    r : remplir manuellement une matrice.\n    f : Remplissage automatique d'une matrice.\n    j : Résoudre AX = B avec la méthode de Jacobi.\n    g : Résoudre AX = B avec la méthode de Gauss.\n    e : rendre une matrice échelonné.\n    v : Changer la valeur d'une case.\n    q : Quitter.\n\n");
+    scanf("%c", &choix);
+    getchar();
+    switch (choix)
+    {
+    case 'h':
+      printf("    h : Afficher cette aide.\n    a : Afficher les matrices A, X "
+             "et B\n    m : Multiplier 2 matrices demander ultérieurement par "
+             "la commande.\n    c : Changer la taille d'une matrice.\n    r : "
+             "remplir manuellement une matrice.\n    f : Remplissage "
+             "automatique d'une matrice.\n    j : Résoudre AX = B avec la "
+             "méthode de Jacobi.\n    g : Résoudre AX = B avec la méthode de "
+             "Gauss.\n    e : rendre une matrice échelonné.\n    v : Changer "
+             "la valeur d'une case.\n    q : Quitter.\n\n");
       break;
-    case 'v' : casUneCase(A,B,X);break;
-    case 'e' :   printf("Quelle matrice voulez-vous échelonner (A, B ou X)? ");
-      scanf("%c", &choix);getchar();
-      switch (choix) {
-      case 'A' : A = Gauss(*A);break;
-      case 'B' : B = Gauss(*B);break;
-      case 'X' : X = Gauss(*X);break;
-      default : printf("Vous ne pouvez pas échelonner une matrice qui n'existe pas...\n"); break;
-      }break;
-    case 'g' : X = casGauss(A, B, X);break;
-    case 'j' : X = casJacobi(A, B, X);break;
-    case 'f' : casAutoFill(A, B, X);break;
-    case 'm' : printf("Vous pouvez :\n        s : Stocker le résultat.\n        a : afficher le résultat.\n Que voulez vous faire : ");scanf("%c", &choix);getchar();
-      if(choix == 'a'){
-	printf("Entrez le nom de la première matrice de la multiplication (A, B ou X): ");
-	scanf("%c", &choix);getchar();
-	valeurTemporaire = (int)(choix);
-	printf("Entrez le nom de la seconde matrice de la multiplication (A, B ou X): ");
-	scanf("%c", &choix);getchar();
-	if(valeurTemporaire-(int)('A') == 0){
-	  switch (choix) {
-	  case 'A' : temporaire = multiplicationMatrice(*A, *A); if(temporaire != NULL){afficheMatrice(*temporaire); destroyMatrice(temporaire);}break;
-	  case 'B' : temporaire = multiplicationMatrice(*A, *B); if(temporaire != NULL){afficheMatrice(*temporaire); destroyMatrice(temporaire);}break;
-	  case 'X' : temporaire = multiplicationMatrice(*A, *X); if(temporaire != NULL){afficheMatrice(*temporaire); destroyMatrice(temporaire);}break;
-	  default: printf("La seconde matrice que vous avez tapé n'existe pas...\n");break;
-	  } 
-	} else if(valeurTemporaire-(int)('B') == 0){
-	  switch (choix) {
-	  case 'A' : temporaire = multiplicationMatrice(*B, *A); if(temporaire != NULL){afficheMatrice(*temporaire); destroyMatrice(temporaire);}break;
-	  case 'B' : temporaire = multiplicationMatrice(*B, *B); if(temporaire != NULL){afficheMatrice(*temporaire); destroyMatrice(temporaire);}break;
-	  case 'X' : temporaire = multiplicationMatrice(*B, *X); if(temporaire != NULL){afficheMatrice(*temporaire); destroyMatrice(temporaire);}break;
-	  default: printf("La seconde matrice que vous avez tapé n'existe pas...\n");break;
-	  } 
-	} else if(valeurTemporaire-(int)('X') == 0){
-	  switch (choix) {
-	  case 'A' : temporaire = multiplicationMatrice(*X, *A); if(temporaire != NULL){afficheMatrice(*temporaire); destroyMatrice(temporaire);}break;
-	  case 'B' : temporaire = multiplicationMatrice(*X, *B); if(temporaire != NULL){afficheMatrice(*temporaire); destroyMatrice(temporaire);}break;
-	  case 'X' : temporaire = multiplicationMatrice(*X, *X); if(temporaire != NULL){afficheMatrice(*temporaire); destroyMatrice(temporaire);}break;
-	  default: printf("La seconde matrice que vous avez tapé n'existe pas...\n");break;
-	  } 
-	}else{
-	  printf("La première matrice que vous avez tapé n'existe pas...\n");
-	}
-      }else if(choix == 's'){
-	printf("Dans quel matrice voulez vous stocker le résultat (A, B ou X) ? ");
-	scanf("%c", &choix);getchar();
-	if(choix == 'A'){
-	  printf("Entrez le nom de la première matrice de la multiplication (A, B ou X) : ");
-	  scanf("%c", &choix);getchar();
-	  valeurTemporaire = (int)(choix);
-	  printf("Entrez le nom de la seconde matrice de la multiplication (A, B ou X) : ");
-	  scanf("%c", &choix);getchar();
-	  if(valeurTemporaire-(int)('A') == 0){
-	    switch (choix) {
-	    case 'A' : temporaire = multiplicationMatrice(*A, *A); if(temporaire != NULL){destroyMatrice(A); A = temporaire;}break;
-	    case 'B' : temporaire = multiplicationMatrice(*A, *B); if(temporaire != NULL){destroyMatrice(A); A = temporaire;}break;
-	    case 'X' : temporaire = multiplicationMatrice(*A, *X); if(temporaire != NULL){destroyMatrice(A); A = temporaire;}break;
-	    default: printf("La seconde matrice que vous avez tapé n'existe pas...\n");break;
-	    } 
-	  } else if(valeurTemporaire-(int)('B') == 0){
-	    switch (choix) {
-	    case 'A' : temporaire = multiplicationMatrice(*B, *A); if(temporaire != NULL){destroyMatrice(A); A = temporaire;}break;
-	    case 'B' : temporaire = multiplicationMatrice(*B, *B); if(temporaire != NULL){destroyMatrice(A); A = temporaire;}break;
-	    case 'X' : temporaire = multiplicationMatrice(*B, *X); if(temporaire != NULL){destroyMatrice(A); A = temporaire;}break;
-	    default: printf("La seconde matrice que vous avez tapé n'existe pas...\n");break;
-	    } 
-	  } else if(valeurTemporaire-(int)('X') == 0){
-	    switch (choix) {
-	    case 'A' : temporaire = multiplicationMatrice(*X, *A); if(temporaire != NULL){destroyMatrice(A); A = temporaire;}break;
-	    case 'B' : temporaire = multiplicationMatrice(*X, *B); if(temporaire != NULL){destroyMatrice(A); A = temporaire;}break;
-	    case 'X' : temporaire = multiplicationMatrice(*X, *X); if(temporaire != NULL){destroyMatrice(A); A = temporaire;}break;
-	    default: printf("La seconde matrice que vous avez tapé n'existe pas...\n");break;
-	    } 
-	  }else{
-	    printf("La première matrice que vous avez tapé n'existe pas...\n");
-	  }
-	} else if(choix == 'B'){
-	  printf("Entrez le nom de la première matrice de la multiplication (A, B ou X) : ");
-	  scanf("%c", &choix);getchar();
-	  valeurTemporaire = (int)(choix);
-	  printf("Entrez le nom de la seconde matrice de la multiplication (A, B ou X) : ");
-	  scanf("%c", &choix);getchar();
-	  if(valeurTemporaire-(int)('A') == 0){
-	    switch (choix) {
-	    case 'A' : temporaire = multiplicationMatrice(*A, *A); if(temporaire != NULL){destroyMatrice(B); B = temporaire;}break;
-	    case 'B' : temporaire = multiplicationMatrice(*A, *B); if(temporaire != NULL){destroyMatrice(B); B = temporaire;}break;
-	    case 'X' : temporaire = multiplicationMatrice(*A, *X); if(temporaire != NULL){destroyMatrice(B); B = temporaire;}break;
-	    default: printf("La seconde matrice que vous avez tapé n'existe pas...\n");break;
-	    } 
-	  } else if(valeurTemporaire-(int)('B') == 0){
-	    switch (choix) {
-	    case 'A' : temporaire = multiplicationMatrice(*B, *A); if(temporaire != NULL){destroyMatrice(B); B = temporaire;}break;
-	    case 'B' : temporaire = multiplicationMatrice(*B, *B); if(temporaire != NULL){destroyMatrice(B); B = temporaire;}break;
-	    case 'X' : temporaire = multiplicationMatrice(*B, *X); if(temporaire != NULL){destroyMatrice(B); B = temporaire;}break;
-	    default: printf("La seconde matrice que vous avez tapé n'existe pas...\n");break;
-	    } 
-	  } else if(valeurTemporaire-(int)('X') == 0){
-	    switch (choix) {
-	    case 'A' : temporaire = multiplicationMatrice(*X, *A); if(temporaire != NULL){destroyMatrice(B); B = temporaire;}break;
-	    case 'B' : temporaire = multiplicationMatrice(*X, *B); if(temporaire != NULL){destroyMatrice(B); B = temporaire;}break;
-	    case 'X' : temporaire = multiplicationMatrice(*X, *X); if(temporaire != NULL){destroyMatrice(B); B = temporaire;}break;
-	    default: printf("La seconde matrice que vous avez tapé n'existe pas...\n");break;
-	    } 
-	  }else{
-	    printf("La première matrice que vous avez tapé n'existe pas...\n");
-	  }
-	} else if(choix == 'X'){
-	  printf("Entrez le nom de la première matrice de la multiplication (A, B ou X) : ");
-	  scanf("%c", &choix);getchar();
-	  valeurTemporaire = (int)(choix);
-	  printf("Entrez le nom de la seconde matrice de la multiplication (A, B ou X) : ");
-	  scanf("%c", &choix);getchar();
-	  if(valeurTemporaire-(int)('A') == 0){
-	    switch (choix) {
-	    case 'A' : temporaire = multiplicationMatrice(*A, *A); if(temporaire != NULL){destroyMatrice(X); X = temporaire;}break;
-	    case 'B' : temporaire = multiplicationMatrice(*A, *B); if(temporaire != NULL){destroyMatrice(X); X = temporaire;}break;
-	    case 'X' : temporaire = multiplicationMatrice(*A, *X); if(temporaire != NULL){destroyMatrice(X); X = temporaire;}break;
-	    default: printf("La seconde matrice que vous avez tapé n'existe pas...\n");break;
-	    } 
-	  } else if(valeurTemporaire-(int)('B') == 0){
-	    switch (choix) {
-	    case 'A' : temporaire = multiplicationMatrice(*B, *A); if(temporaire != NULL){destroyMatrice(X); X = temporaire;}break;
-	    case 'B' : temporaire = multiplicationMatrice(*B, *B); if(temporaire != NULL){destroyMatrice(X); X = temporaire;}break;
-	    case 'X' : temporaire = multiplicationMatrice(*B, *X); if(temporaire != NULL){destroyMatrice(X); X = temporaire;}break;
-	    default: printf("La seconde matrice que vous avez tapé n'existe pas...\n");break;
-	    } 
-	  } else if(valeurTemporaire-(int)('X') == 0){
-	    switch (choix) {
-	    case 'A' : temporaire = multiplicationMatrice(*X, *A); if(temporaire != NULL){destroyMatrice(X); X = temporaire;}break;
-	    case 'B' : temporaire = multiplicationMatrice(*X, *B); if(temporaire != NULL){destroyMatrice(X); X = temporaire;}break;
-	    case 'X' : temporaire = multiplicationMatrice(*X, *X); if(temporaire != NULL){destroyMatrice(X); X = temporaire;}break;
-	    default: printf("La seconde matrice que vous avez tapé n'existe pas...\n");break;
-	    } 
-	  }else{
-	    printf("La première matrice que vous avez tapé n'existe pas...\n");
-	  }
-	}else{
-	  printf("Le choix que vous avez tapé n'existe pas.\n");
-	}
-      }else{
-	printf("Le choix que vous avez tapé n'existe pas.\n");
+    case 'v':
+      casUneCase(A, B, X);
+      break;
+    case 'e':
+      printf("Quelle matrice voulez-vous échelonner (A, B ou X)? ");
+      scanf("%c", &choix);
+      getchar();
+      switch (choix)
+      {
+      case 'A':
+        A = Gauss(*A);
+        break;
+      case 'B':
+        B = Gauss(*B);
+        break;
+      case 'X':
+        X = Gauss(*X);
+        break;
+      default:
+        printf(
+            "Vous ne pouvez pas échelonner une matrice qui n'existe pas...\n");
+        break;
       }
       break;
-    case 'c' : large = -1;
+    case 'g':
+      X = casGauss(A, B, X);
+      break;
+    case 'j':
+      X = casJacobi(A, B, X);
+      break;
+    case 'f':
+      casAutoFill(A, B, X);
+      break;
+    case 'm':
+      printf("Vous pouvez :\n        s : Stocker le résultat.\n        a : "
+             "afficher le résultat.\n Que voulez vous faire : ");
+      scanf("%c", &choix);
+      getchar();
+      if (choix == 'a')
+      {
+        printf("Entrez le nom de la première matrice de la multiplication (A, "
+               "B ou X): ");
+        scanf("%c", &choix);
+        getchar();
+        valeurTemporaire = (int)(choix);
+        printf("Entrez le nom de la seconde matrice de la multiplication (A, B "
+               "ou X): ");
+        scanf("%c", &choix);
+        getchar();
+        if (valeurTemporaire - (int)('A') == 0)
+        {
+          switch (choix)
+          {
+          case 'A':
+            temporaire = multiplicationMatrice(*A, *A);
+            if (temporaire != NULL)
+            {
+              afficheMatrice(*temporaire);
+              destroyMatrice(temporaire);
+            }
+            break;
+          case 'B':
+            temporaire = multiplicationMatrice(*A, *B);
+            if (temporaire != NULL)
+            {
+              afficheMatrice(*temporaire);
+              destroyMatrice(temporaire);
+            }
+            break;
+          case 'X':
+            temporaire = multiplicationMatrice(*A, *X);
+            if (temporaire != NULL)
+            {
+              afficheMatrice(*temporaire);
+              destroyMatrice(temporaire);
+            }
+            break;
+          default:
+            printf("La seconde matrice que vous avez tapé n'existe pas...\n");
+            break;
+          }
+        }
+        else if (valeurTemporaire - (int)('B') == 0)
+        {
+          switch (choix)
+          {
+          case 'A':
+            temporaire = multiplicationMatrice(*B, *A);
+            if (temporaire != NULL)
+            {
+              afficheMatrice(*temporaire);
+              destroyMatrice(temporaire);
+            }
+            break;
+          case 'B':
+            temporaire = multiplicationMatrice(*B, *B);
+            if (temporaire != NULL)
+            {
+              afficheMatrice(*temporaire);
+              destroyMatrice(temporaire);
+            }
+            break;
+          case 'X':
+            temporaire = multiplicationMatrice(*B, *X);
+            if (temporaire != NULL)
+            {
+              afficheMatrice(*temporaire);
+              destroyMatrice(temporaire);
+            }
+            break;
+          default:
+            printf("La seconde matrice que vous avez tapé n'existe pas...\n");
+            break;
+          }
+        }
+        else if (valeurTemporaire - (int)('X') == 0)
+        {
+          switch (choix)
+          {
+          case 'A':
+            temporaire = multiplicationMatrice(*X, *A);
+            if (temporaire != NULL)
+            {
+              afficheMatrice(*temporaire);
+              destroyMatrice(temporaire);
+            }
+            break;
+          case 'B':
+            temporaire = multiplicationMatrice(*X, *B);
+            if (temporaire != NULL)
+            {
+              afficheMatrice(*temporaire);
+              destroyMatrice(temporaire);
+            }
+            break;
+          case 'X':
+            temporaire = multiplicationMatrice(*X, *X);
+            if (temporaire != NULL)
+            {
+              afficheMatrice(*temporaire);
+              destroyMatrice(temporaire);
+            }
+            break;
+          default:
+            printf("La seconde matrice que vous avez tapé n'existe pas...\n");
+            break;
+          }
+        }
+        else
+        {
+          printf("La première matrice que vous avez tapé n'existe pas...\n");
+        }
+      }
+      else if (choix == 's')
+      {
+        printf(
+            "Dans quel matrice voulez vous stocker le résultat (A, B ou X) ? ");
+        scanf("%c", &choix);
+        getchar();
+        if (choix == 'A')
+        {
+          printf("Entrez le nom de la première matrice de la multiplication "
+                 "(A, B ou X) : ");
+          scanf("%c", &choix);
+          getchar();
+          valeurTemporaire = (int)(choix);
+          printf("Entrez le nom de la seconde matrice de la multiplication (A, "
+                 "B ou X) : ");
+          scanf("%c", &choix);
+          getchar();
+          if (valeurTemporaire - (int)('A') == 0)
+          {
+            switch (choix)
+            {
+            case 'A':
+              temporaire = multiplicationMatrice(*A, *A);
+              if (temporaire != NULL)
+              {
+                destroyMatrice(A);
+                A = temporaire;
+              }
+              break;
+            case 'B':
+              temporaire = multiplicationMatrice(*A, *B);
+              if (temporaire != NULL)
+              {
+                destroyMatrice(A);
+                A = temporaire;
+              }
+              break;
+            case 'X':
+              temporaire = multiplicationMatrice(*A, *X);
+              if (temporaire != NULL)
+              {
+                destroyMatrice(A);
+                A = temporaire;
+              }
+              break;
+            default:
+              printf("La seconde matrice que vous avez tapé n'existe pas...\n");
+              break;
+            }
+          }
+          else if (valeurTemporaire - (int)('B') == 0)
+          {
+            switch (choix)
+            {
+            case 'A':
+              temporaire = multiplicationMatrice(*B, *A);
+              if (temporaire != NULL)
+              {
+                destroyMatrice(A);
+                A = temporaire;
+              }
+              break;
+            case 'B':
+              temporaire = multiplicationMatrice(*B, *B);
+              if (temporaire != NULL)
+              {
+                destroyMatrice(A);
+                A = temporaire;
+              }
+              break;
+            case 'X':
+              temporaire = multiplicationMatrice(*B, *X);
+              if (temporaire != NULL)
+              {
+                destroyMatrice(A);
+                A = temporaire;
+              }
+              break;
+            default:
+              printf("La seconde matrice que vous avez tapé n'existe pas...\n");
+              break;
+            }
+          }
+          else if (valeurTemporaire - (int)('X') == 0)
+          {
+            switch (choix)
+            {
+            case 'A':
+              temporaire = multiplicationMatrice(*X, *A);
+              if (temporaire != NULL)
+              {
+                destroyMatrice(A);
+                A = temporaire;
+              }
+              break;
+            case 'B':
+              temporaire = multiplicationMatrice(*X, *B);
+              if (temporaire != NULL)
+              {
+                destroyMatrice(A);
+                A = temporaire;
+              }
+              break;
+            case 'X':
+              temporaire = multiplicationMatrice(*X, *X);
+              if (temporaire != NULL)
+              {
+                destroyMatrice(A);
+                A = temporaire;
+              }
+              break;
+            default:
+              printf("La seconde matrice que vous avez tapé n'existe pas...\n");
+              break;
+            }
+          }
+          else
+          {
+            printf("La première matrice que vous avez tapé n'existe pas...\n");
+          }
+        }
+        else if (choix == 'B')
+        {
+          printf("Entrez le nom de la première matrice de la multiplication "
+                 "(A, B ou X) : ");
+          scanf("%c", &choix);
+          getchar();
+          valeurTemporaire = (int)(choix);
+          printf("Entrez le nom de la seconde matrice de la multiplication (A, "
+                 "B ou X) : ");
+          scanf("%c", &choix);
+          getchar();
+          if (valeurTemporaire - (int)('A') == 0)
+          {
+            switch (choix)
+            {
+            case 'A':
+              temporaire = multiplicationMatrice(*A, *A);
+              if (temporaire != NULL)
+              {
+                destroyMatrice(B);
+                B = temporaire;
+              }
+              break;
+            case 'B':
+              temporaire = multiplicationMatrice(*A, *B);
+              if (temporaire != NULL)
+              {
+                destroyMatrice(B);
+                B = temporaire;
+              }
+              break;
+            case 'X':
+              temporaire = multiplicationMatrice(*A, *X);
+              if (temporaire != NULL)
+              {
+                destroyMatrice(B);
+                B = temporaire;
+              }
+              break;
+            default:
+              printf("La seconde matrice que vous avez tapé n'existe pas...\n");
+              break;
+            }
+          }
+          else if (valeurTemporaire - (int)('B') == 0)
+          {
+            switch (choix)
+            {
+            case 'A':
+              temporaire = multiplicationMatrice(*B, *A);
+              if (temporaire != NULL)
+              {
+                destroyMatrice(B);
+                B = temporaire;
+              }
+              break;
+            case 'B':
+              temporaire = multiplicationMatrice(*B, *B);
+              if (temporaire != NULL)
+              {
+                destroyMatrice(B);
+                B = temporaire;
+              }
+              break;
+            case 'X':
+              temporaire = multiplicationMatrice(*B, *X);
+              if (temporaire != NULL)
+              {
+                destroyMatrice(B);
+                B = temporaire;
+              }
+              break;
+            default:
+              printf("La seconde matrice que vous avez tapé n'existe pas...\n");
+              break;
+            }
+          }
+          else if (valeurTemporaire - (int)('X') == 0)
+          {
+            switch (choix)
+            {
+            case 'A':
+              temporaire = multiplicationMatrice(*X, *A);
+              if (temporaire != NULL)
+              {
+                destroyMatrice(B);
+                B = temporaire;
+              }
+              break;
+            case 'B':
+              temporaire = multiplicationMatrice(*X, *B);
+              if (temporaire != NULL)
+              {
+                destroyMatrice(B);
+                B = temporaire;
+              }
+              break;
+            case 'X':
+              temporaire = multiplicationMatrice(*X, *X);
+              if (temporaire != NULL)
+              {
+                destroyMatrice(B);
+                B = temporaire;
+              }
+              break;
+            default:
+              printf("La seconde matrice que vous avez tapé n'existe pas...\n");
+              break;
+            }
+          }
+          else
+          {
+            printf("La première matrice que vous avez tapé n'existe pas...\n");
+          }
+        }
+        else if (choix == 'X')
+        {
+          printf("Entrez le nom de la première matrice de la multiplication "
+                 "(A, B ou X) : ");
+          scanf("%c", &choix);
+          getchar();
+          valeurTemporaire = (int)(choix);
+          printf("Entrez le nom de la seconde matrice de la multiplication (A, "
+                 "B ou X) : ");
+          scanf("%c", &choix);
+          getchar();
+          if (valeurTemporaire - (int)('A') == 0)
+          {
+            switch (choix)
+            {
+            case 'A':
+              temporaire = multiplicationMatrice(*A, *A);
+              if (temporaire != NULL)
+              {
+                destroyMatrice(X);
+                X = temporaire;
+              }
+              break;
+            case 'B':
+              temporaire = multiplicationMatrice(*A, *B);
+              if (temporaire != NULL)
+              {
+                destroyMatrice(X);
+                X = temporaire;
+              }
+              break;
+            case 'X':
+              temporaire = multiplicationMatrice(*A, *X);
+              if (temporaire != NULL)
+              {
+                destroyMatrice(X);
+                X = temporaire;
+              }
+              break;
+            default:
+              printf("La seconde matrice que vous avez tapé n'existe pas...\n");
+              break;
+            }
+          }
+          else if (valeurTemporaire - (int)('B') == 0)
+          {
+            switch (choix)
+            {
+            case 'A':
+              temporaire = multiplicationMatrice(*B, *A);
+              if (temporaire != NULL)
+              {
+                destroyMatrice(X);
+                X = temporaire;
+              }
+              break;
+            case 'B':
+              temporaire = multiplicationMatrice(*B, *B);
+              if (temporaire != NULL)
+              {
+                destroyMatrice(X);
+                X = temporaire;
+              }
+              break;
+            case 'X':
+              temporaire = multiplicationMatrice(*B, *X);
+              if (temporaire != NULL)
+              {
+                destroyMatrice(X);
+                X = temporaire;
+              }
+              break;
+            default:
+              printf("La seconde matrice que vous avez tapé n'existe pas...\n");
+              break;
+            }
+          }
+          else if (valeurTemporaire - (int)('X') == 0)
+          {
+            switch (choix)
+            {
+            case 'A':
+              temporaire = multiplicationMatrice(*X, *A);
+              if (temporaire != NULL)
+              {
+                destroyMatrice(X);
+                X = temporaire;
+              }
+              break;
+            case 'B':
+              temporaire = multiplicationMatrice(*X, *B);
+              if (temporaire != NULL)
+              {
+                destroyMatrice(X);
+                X = temporaire;
+              }
+              break;
+            case 'X':
+              temporaire = multiplicationMatrice(*X, *X);
+              if (temporaire != NULL)
+              {
+                destroyMatrice(X);
+                X = temporaire;
+              }
+              break;
+            default:
+              printf("La seconde matrice que vous avez tapé n'existe pas...\n");
+              break;
+            }
+          }
+          else
+          {
+            printf("La première matrice que vous avez tapé n'existe pas...\n");
+          }
+        }
+        else
+        {
+          printf("Le choix que vous avez tapé n'existe pas.\n");
+        }
+      }
+      else
+      {
+        printf("Le choix que vous avez tapé n'existe pas.\n");
+      }
+      break;
+    case 'c':
+      large = -1;
       longu = -1;
       printf("Quelle matrice voulez-vous modifier la taille (A, B ou X)? ");
-      scanf("%c", &choix);getchar();
-      printf("Entrez maintenant le nombre de colonnes souhaité(un nombre entier positif) : ");
-      while(large < 1){scanf("%d", &large);getchar();}
-      printf("Entrez maintenant le nombre de lignes souhaité(un nombre entier positif) : ");
-      while (longu < 1) {scanf("%d", &longu);getchar();}
-      switch (choix) {
-      case 'A' : destroyMatrice(A); A = creerMatrice(large, longu);break;
-      case 'B' : destroyMatrice(B); B = creerMatrice(large, longu);break;
-      case 'X' : destroyMatrice(X); X = creerMatrice(large, longu);break;
-      default : printf("Vous avez choisi une matrice inexistante...\n");break;
-      }break;
-    case 'r' : casRempli(A, B, X);break;
-    case 'a' : printf("La matrice A est :\n");afficheMatrice(*A);printf("La matrice X est :\n");afficheMatrice(*X);printf("La matrice B est :\n");afficheMatrice(*B);break;
-    case 'q' : printf("Au revoir!!!\n");break;
-    default : printf("Toutes les lettres a rentrés (excepté les noms de matrices) sont en minuscule. Utiliser h pour savoir quels sont vos choix.\n\n");getchar();break;
+      scanf("%c", &choix);
+      getchar();
+      printf("Entrez maintenant le nombre de colonnes souhaité(un nombre "
+             "entier positif) : ");
+      while (large < 1)
+      {
+        scanf("%d", &large);
+        getchar();
+      }
+      printf("Entrez maintenant le nombre de lignes souhaité(un nombre entier "
+             "positif) : ");
+      while (longu < 1)
+      {
+        scanf("%d", &longu);
+        getchar();
+      }
+      switch (choix)
+      {
+      case 'A':
+        destroyMatrice(A);
+        A = creerMatrice(large, longu);
+        break;
+      case 'B':
+        destroyMatrice(B);
+        B = creerMatrice(large, longu);
+        break;
+      case 'X':
+        destroyMatrice(X);
+        X = creerMatrice(large, longu);
+        break;
+      default:
+        printf("Vous avez choisi une matrice inexistante...\n");
+        break;
+      }
+      break;
+    case 'r':
+      casRempli(A, B, X);
+      break;
+    case 'a':
+      printf("La matrice A est :\n");
+      afficheMatrice(*A);
+      printf("La matrice X est :\n");
+      afficheMatrice(*X);
+      printf("La matrice B est :\n");
+      afficheMatrice(*B);
+      break;
+    case 'q':
+      printf("Au revoir!!!\n");
+      break;
+    default:
+      printf("Toutes les lettres a rentrés (excepté les noms de matrices) sont "
+             "en minuscule. Utiliser h pour savoir quels sont vos choix.\n\n");
+      getchar();
+      break;
     }
   }
 
