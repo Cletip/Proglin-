@@ -23,6 +23,7 @@ matrice *creerMatrice(int largeur, int longueur);
 void destroyMatrice(matrice *mat);
 void afficheMatrice(matrice mat);
 void remplisAleaBcpZero(matrice *mat);
+void remplisBeaucoupZeroDiagDomi(matrice *mat);
 void remplisAlea(matrice *mat);
 void remplisAleaInt(matrice *mat);
 void remplisAleaDiagonalDominante(matrice *mat);
