@@ -11,7 +11,7 @@ OBJ= $(SRC:.c=.o)
 
 
 
-all: $(EXEC)
+all: $(EXEC) clean
 
 
 
