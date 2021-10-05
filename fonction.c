@@ -1,6 +1,7 @@
 /* toutes les fct */
 #include "fonction.h"
 #include "matricetest.c"
+#include <stdlib.h>
 
 /* création d'une, renvoie un pointeur sur une matrice */
 matrice *creerMatrice(int largeur, int longueur)
@@ -51,7 +52,7 @@ void afficheMatrice(matrice mat)
     {
       if(i == j){
 	printf("\033[0;31m"); 
-	printf("%7.3LF ", mat.Mat[i][j]);
+	printf("%12.7LF ", mat.Mat[i][j]);
 	printf("\033[0m");
       }else{
 	printf("%12.7LF ", mat.Mat[i][j]);
@@ -99,21 +100,42 @@ void remplisAleaInt(matrice *mat){
 }
 
 void remplisAleaDiagonalDominante(matrice *mat){
-  int somme;
-  for(int i = 0; i < mat->longueur; i++){
+  long double somme;
+  for(int i = 0; i < mat->largeur; i++){
     somme = 0;
-    for(int j = 0; j < mat->largeur; j++){
+    for(int j = 0; j < mat->longueur; j++){
       if(i != j){
 	
-	mat->Mat[i][j] = ((long double)rand()/RAND_MAX*2.0-1.0)*100;
-	somme += fabsl(mat->Mat[i][j]);
+	mat->Mat[j][i] = ((long double)rand()/RAND_MAX*2.0-1.0)*100;
+	somme += fabsl(mat->Mat[j][i]);
       }
     }
-    if(i < mat->largeur){
+    if(i < mat->longueur){
       mat->Mat[i][i] = somme + fabsl(((long double)rand()/RAND_MAX*2.0-1.0)*100);
     }
   }
 }
+
+void remplisBeaucoupZeroDiagDomi(matrice *mat){
+  remplisAleaDiagonalDominante(mat);
+  int nb = 0;
+  int value = (int)((mat->largeur*mat->longueur)*0.7f);
+  int echec = 0;
+  while((nb <= value) && (echec < 10)){
+    int x = (int)(rand())%(mat->longueur);
+    int y = (int)(rand())%(mat->largeur);
+    if(x != y){
+      if(mat->Mat[x][y] != 0){
+	mat->Mat[x][y] =0;
+	echec = 0;
+	nb++;
+      }else{
+	echec++;
+      }
+    }
+  }
+}
+
 
 matrice *additionMatrice(matrice mat1, matrice mat2)
 {

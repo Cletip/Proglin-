@@ -664,13 +664,13 @@ void casDeVerif(){
   printf("    Entrez le max d'itération(un nombre entier positif) : ");
   while(maxIter < 0){scanf("%d", &maxIter);getchar();}
 
-  while((choixA != 'j') && (choixA != 'b') && (choixA != 'k') && (choixA != 'l')){
-  printf("De quelle manière voulez vous remplir la matrice A(Toute les manières possibles ici sont à diagonale dominante sinon cela fausserais complètement les résultats de la méthode de Jacobi.) ?\n        j : Aléatoirement avec la diagonale dominante.\n        b : Avec la méthode de Bord.\n        k : Avec la méthode de Kms.\n        l : Avec la méthode de Lehmer.\n");
+  while((choixA != 'j') && (choixA != 'b') && (choixA != 'k') && (choixA != 'l') && (choixA != 'e')){
+  printf("De quelle manière voulez vous remplir la matrice A(Toute les manières possibles ici sont à diagonale dominante sinon cela fausserais complètement les résultats de la méthode de Jacobi.) ?\n        j : Aléatoirement avec la diagonale dominante.\n        e : Avec une diagonale dominante et 70%% de zéros.\n        b : Avec la méthode de Bord.\n        k : Avec la méthode de Kms.\n        l : Avec la méthode de Lehmer.\n");
     scanf("%c", &choixA);getchar();
   }
 
   while ((choixB != 'a') && (choixB != 'i') && (choixB != 'z') && (choixB != 'j') && (choixB != 'b') && (choixB != 'd') && (choixB != 'f') && (choixB != 'n') && (choixB != 'p') && (choixB != 'k') && (choixB != 'l') && (choixB != 'o') && (choixB != 'm')){ 
-  printf("De quelle manière voulez vous remplir la matrice colonne B ?\n        a : Aléatoirement entre 100 et -100.\n        i : aléatoirement par des entiers entre 100 et -100.\n        z : Aléatoirement avec 70 pourcent de zéros.\n        j : Aléatoirement avec la diagonale dominante.\n        b : Avec la méthode de Bord.\n        d : Avec la méthode de DingDong.\n        f : Avec la méthode de Franc.\n        n : Avec la méthode de Hilbert Négative.\n        p : Avec la méthode de Hilbert Positive.\n        k : Avec la méthode de Kms.\n        l : Avec la méthode de Lehmer.\n        o : Avec la méthode de Lotkin.\n        m : Avec la méthode de Moler.\n");
+  printf("De quelle manière voulez vous remplir la matrice colonne B ?\n        a : Aléatoirement entre 100 et -100.\n        i : aléatoirement par des entiers entre 100 et -100.\n        z : Aléatoirement avec 70 pourcent de zéros.\n        j : Aléatoirement avec la diagonale dominante.\n        e : Avec une diagonale dominante et 70%% de zéros.\n        b : Avec la méthode de Bord.\n        d : Avec la méthode de DingDong.\n        f : Avec la méthode de Franc.\n        n : Avec la méthode de Hilbert Négative.\n        p : Avec la méthode de Hilbert Positive.\n        k : Avec la méthode de Kms.\n        l : Avec la méthode de Lehmer.\n        o : Avec la méthode de Lotkin.\n        m : Avec la méthode de Moler.\n");
     scanf("%c", &choixB);getchar();
 }
   printf("\n");
@@ -699,6 +699,7 @@ void casDeVerif(){
     case 'b' : rempliBord(A);break;
     case 'k' : rempliKms(A);break;
     case 'l' : rempliLehmer(A);break;
+    case 'e' : remplisBeaucoupZeroDiagDomi(A);break;
     default:printf("Il y a une erreur, %c!!!\n", choixA);break;
     }
 
@@ -707,6 +708,7 @@ void casDeVerif(){
     case 'i': remplisAleaInt(B); break;
     case 'z': remplisAleaBcpZero(B);break;
     case 'j': remplisAleaDiagonalDominante(B);break;
+    case 'e' : remplisBeaucoupZeroDiagDomi(B);break;
     case 'b': rempliBord(B);break;
     case 'd': rempliDingDong(B);break;
     case 'f': rempliFranc(B);break;
@@ -901,7 +903,7 @@ matrice *casJacobi(matrice *A, matrice *B, matrice *X)
 
 void rempliAuto(matrice *A){
   char choix;
-  printf("De quelle manière voulez vous remplir cette matrice ?\n        a : Aléatoirement entre 100 et -100.\n        i : aléatoirement par des entiers entre 100 et -100.\n        z : Aléatoirement avec 70 pourcent de zéros.\n        j : Aléatoirement avec la diagonale dominante.\n        b : Avec la méthode de Bord.\n        d : Avec la méthode de DingDong.\n        f : Avec la méthode de Franc.\n        n : Avec la méthode de Hilbert Négative.\n        p : Avec la méthode de Hilbert Positive.\n        k : Avec la méthode de Kms.\n        l : Avec la méthode de Lehmer.\n        o : Avec la méthode de Lotkin.\n        m : Avec la méthode de Moler.\n");
+  printf("De quelle manière voulez vous remplir cette matrice ?\n        a : Aléatoirement entre 100 et -100.\n        i : aléatoirement par des entiers entre 100 et -100.\n        z : Aléatoirement avec 70 pourcent de zéros.\n        j : Aléatoirement avec la diagonale dominante.\n        e : Avec une diagonale dominante et 70%% de zéros.\n        b : Avec la méthode de Bord.\n        d : Avec la méthode de DingDong.\n        f : Avec la méthode de Franc.\n        n : Avec la méthode de Hilbert Négative.\n        p : Avec la méthode de Hilbert Positive.\n        k : Avec la méthode de Kms.\n        l : Avec la méthode de Lehmer.\n        o : Avec la méthode de Lotkin.\n        m : Avec la méthode de Moler.\n");
     scanf("%c", &choix);getchar();
 
     switch(choix){
@@ -909,6 +911,7 @@ void rempliAuto(matrice *A){
     case 'i': remplisAleaInt(A); break;
     case 'z': remplisAleaBcpZero(A);break;
     case 'j': remplisAleaDiagonalDominante(A);break;
+    case 'e': remplisBeaucoupZeroDiagDomi(A);break;
     case 'b': rempliBord(A);break;
     case 'd': rempliDingDong(A);break;
     case 'f': rempliFranc(A);break;
