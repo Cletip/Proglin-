@@ -665,7 +665,7 @@ void casDeVerif(){
   while(maxIter < 0){scanf("%d", &maxIter);getchar();}
 
   while((choixA != 'j') && (choixA != 'b') && (choixA != 'k') && (choixA != 'l') && (choixA != 'e')){
-  printf("De quelle manière voulez vous remplir la matrice A(Toute les manières possibles ici sont à diagonale dominante sinon cela fausserais complètement les résultats de la méthode de Jacobi.) ?\n        j : Aléatoirement avec la diagonale dominante.\n        e : Avec une diagonale dominante et 70%% de zéros.\n        b : Avec la méthode de Bord.\n        k : Avec la méthode de Kms.\n        l : Avec la méthode de Lehmer.\n");
+  printf("\nDe quelle manière voulez vous remplir la matrice A(Toute les manières possibles ici sont à diagonale dominante sinon cela fausserais complètement les résultats de la méthode de Jacobi.) ?\n        j : Aléatoirement avec la diagonale dominante.\n        e : Avec une diagonale dominante et 70%% de zéros.\n        b : Avec la méthode de Bord.\n        k : Avec la méthode de Kms.\n        l : Avec la méthode de Lehmer.\n");
     scanf("%c", &choixA);getchar();
   }
 

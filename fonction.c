@@ -101,16 +101,19 @@ void remplisAleaInt(matrice *mat){
 
 void remplisAleaDiagonalDominante(matrice *mat){
   long double somme;
-  for(int i = 0; i < mat->largeur; i++){
-    somme = 0;
-    for(int j = 0; j < mat->longueur; j++){
+  for(int i = 0; i < mat->longueur; i++){
+    for(int j = 0; j < mat->largeur; j++){
       if(i != j){
-	
-	mat->Mat[j][i] = ((long double)rand()/RAND_MAX*2.0-1.0)*100;
-	somme += fabsl(mat->Mat[j][i]);
+	mat->Mat[i][j] = ((long double)rand()/RAND_MAX*2.0-1.0)*100;
       }
     }
-    if(i < mat->longueur){
+  }
+  for(int i = 0; i < mat->longueur; i++){
+    somme = 0;
+    for(int j = 0; j < mat->largeur; j++){
+      somme += fabsl(mat->Mat[i][j]);
+    }
+  if(i < mat->largeur){
       mat->Mat[i][i] = somme + fabsl(((long double)rand()/RAND_MAX*2.0-1.0)*100);
     }
   }
