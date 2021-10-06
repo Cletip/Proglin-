@@ -1,4 +1,4 @@
-% Created 2021-10-03 dim. 18:59
+% Created 2021-10-06 mer. 15:40
 % Intended LaTeX compiler: pdflatex
 \documentclass[letter]{article}
                       \usepackage[utf8]{inputenc}
@@ -30,7 +30,7 @@
 \input{/home/msi/Documents/Org/Latex/Setupfile/Pagedegarde/Pagedegarde1/pagedegarde1.org}
 
 
-\setcounter{tocdepth}{2}
+\setcounter{tocdepth}{3}
 \tableofcontents
 
 \newpage
@@ -39,9 +39,9 @@
 
 
 \section{Rappel rapide des méthodes}
-\label{sec:org08c367f}
+\label{sec:orgabada95}
 \subsection{Méthode de Gauss}
-\label{sec:org0bb42a8}
+\label{sec:org29f71f8}
 Cette méthode permet de trouver une solution exacte au système \(Ax = b\) en un nombre fini d'étape.
 
 
@@ -50,12 +50,11 @@ Pour ce faire, cette méthode se fait en plusieurs étapes :
 \begin{enumerate}
 \item La triangularisation
 On doit passer du système \(Ax=b\) au système \(A'x=b'\) où A' est une matrice triangulaire supérieure. L'algorithme utilisé est disponible dans le programme.
-\item La résolution facile
-\texttt{Nécessite aucun 0 sur la diagonale de A}
+\item La résolution facile \texttt{nécessite aucun 0 sur la diagonale de A}
 \end{enumerate}
 
 \subsection{Méthode de Jacobi}
-\label{sec:orga98989e}
+\label{sec:orgeefc8ee}
 
 Cette méthode fait partie des méthodes itératives, où l'on cherche à se rapprocher, avec une suite d'itération définie, à une solution exacte.
 
@@ -83,13 +82,13 @@ De plus, l'algorithme de Jacobi s'écrit avec une précision \(\epsilon\) :
 
 
 \section{Présentation des programmes commentés}
-\label{sec:org610bf64}
+\label{sec:org03b3d8e}
 
 \subsection{Présentation Général :}
-\label{sec:org595a193}
+\label{sec:orgf6900d0}
 
 \subsubsection{Les différents fichiers utilisés}
-\label{sec:orgb01ef32}
+\label{sec:org00ffa6a}
 Pour effectuer ce travail, nous avons décidé de séparer notre programme en plusieurs fichiers : 
 
 \begin{enumerate}
@@ -107,11 +106,11 @@ Pour effectuer ce travail, nous avons décidé de séparer notre programme en pl
 
 
 \subsubsection{Les structures ainsi que les fonctions usuelles}
-\label{sec:orgcae3a08}
+\label{sec:org2308d22}
 
 \begin{enumerate}
 \item La structure de nos matrice
-\label{sec:orgb1ae64c}
+\label{sec:orgab84745}
 
 Nous avons choisis de définir notre structure matrice de la sorte :
 
@@ -126,11 +125,11 @@ Nous avons choisis de définir notre structure matrice de la sorte :
 
 \end{verbatim}
 
-Mettre la longueur et la largeur de la matrice directement dans la structure permet à nos fonction de ne plus les avoir en paramètre. De plus, les matrices sont des doubles tableaux. On utilise dont un pointeur de pointeur pour permettre, grâce à la fonction 
+Mettre la longueur et la largeur de la matrice directement dans la structure permet à nos fonction de ne plus les avoir en paramètre. De plus, les matrices sont des doubles tableaux. On utilise donc un pointeur de pointeur pour permettre aux différentes fonctions utilisées de pouvoir accéder à la matrice.
 
 
 \item Les fonctions usuelles
-\label{sec:org5bcbf8e}
+\label{sec:org39d919e}
 
 
 \begin{enumerate}
@@ -180,7 +179,7 @@ void destroyMatrice(matrice *mat)
 }
 \end{verbatim}
 
-\item / afficheMatrice/, qui permet tout simplement d'afficher une matrice.
+\item \emph{afficheMatrice}, qui permet tout simplement d'afficher une matrice.
 
 \item \emph{remplisAleaBcpZero}, qui permet de remplir une matrice avec environ 70\% de 0.
 
@@ -269,10 +268,23 @@ matrice *multiplicationMatrice(matrice mat1, matrice mat2)
 
 
 
-\subsection{{\bfseries\sffamily TODO} Gauss}
-\label{sec:org24eac37}
-\subsubsection{Gestion des 0 sur la diagonale}
-\label{sec:org3e6e9ff}
+\subsection{Gauss}
+\label{sec:orgcec4756}
+
+Pour cette méthode, nous procédons en deux grandes étapes :
+
+\subsubsection{Échelonnage de la matrice A}
+\label{sec:org6a16cd4}
+
+Pour échelonner la matrice, TODO
+
+\subsubsection{Application de la méthode}
+\label{sec:org228b930}
+
+
+\begin{enumerate}
+\item Gestion des 0 sur la diagonale
+\label{sec:orgd79be4c}
 
 Tout d'abord, cette méthode requiert des nombres non nul sur la diagonale. Il faut donc tester, en échangeant certaines lignes, si il est possible d'obtenir une matrice avec aucun 0 sur les diagonales
 
@@ -344,8 +356,8 @@ while (okayDiag)
 
 \end{verbatim}
 
-\subsubsection{Application de la méthode}
-\label{sec:orgb667594}
+\item Application de la méthode
+\label{sec:org5189135}
 Puis, on peut appliquer la méthode de Gauss sur la matrice augmentée AB
 
 \begin{verbatim}
@@ -374,8 +386,8 @@ for (int i = 0; i < n; i++)
 
 \end{verbatim}
 
-\subsubsection{Application de calcul simple}
-\label{sec:org225c67c}
+\item Application de calcul simple
+\label{sec:org6af641c}
 Enfin, on peut appliquer le calcul simple sur matrice augmenté obtenue pour obtenir le résultat dans X
 
 \begin{verbatim}
@@ -393,11 +405,18 @@ for (int i = n - 2; i > -1; i--)
 \end{verbatim}
 
 
+Gauss : échelonne une matrice
+
+Résolution gauss = matrice A augmenté
+\end{enumerate}
+
+
+
 \subsection{Jacobi}
-\label{sec:org62ec26d}
+\label{sec:org65f9d38}
 
 \subsubsection{Gestion des matrices non diagonales dominantes}
-\label{sec:org37cb1fd}
+\label{sec:org592da12}
 
 
 Tout d'abord, pour utiliser la méthode de Jacobi, il faut que les matrices soient de la bonne taille. On vérifie donc que la matrice A est carré, que la longueur de A est égal à celle de B, ainsi que la largeur de B qui doit être égal à un. Ces conditions sont testés avec ce code :
@@ -458,11 +477,11 @@ Sinon, le reste du code est exécuté normalement.
 
 
 \subsubsection{Méthode général}
-\label{sec:orgdab054a}
+\label{sec:orgb0f9ede}
 
 \begin{enumerate}
 \item Initialisation des différentes matrices nécessaires
-\label{sec:org6af8c63}
+\label{sec:org4a9afa7}
 
 Suites à la création des matrices x, D, E, F (et N) à l'aide des fonction usuelles, il faut les initialiser avec les bonnes valeurs. On a choisit de faire un parcours de la matrice A, et lorsque les conditions sont réunies, nous entrons la valeur de A en fonction de la matrice.
 
@@ -500,7 +519,7 @@ for (int i = 0; i < A->longueur; i++)
 
 
 \item Inversion de la matrice D
-\label{sec:org4c7b7d5}
+\label{sec:org7650b42}
 
 Puis, on initialise la marge d'erreur. Nous inversons également D (avec la fonction \emph{InversematriceD}), car il faut utiliser \(D^{-1}\)
 
@@ -532,7 +551,8 @@ InversematriceD(D->longueur, D);
 
 
 \item Méthode de Jacobi appliquée
-\label{sec:org6cfa08c}
+\label{sec:org0ca3fcd}
+
 Enfin, nous programmons la méthode de Jacobi grâce aux fonctions "multiplicationMatrice, additionMatrice".
 La boucle utiliser est un tant que, car nous ne savons pas quand la marge d'erreur sera respecté pour sortir de la boucle while.
 La variable \emph{erreur} doit également être mise à jour à chaque passage dans la boucle, en utilisant la fonction \emph{Norme}.
@@ -567,70 +587,132 @@ return x;
 \end{enumerate}
 
 \subsection{Programme final}
-\label{sec:org5adf5f0}
+\label{sec:org917d540}
 
 Les différentes fonctions sont appelées au fur et à mesure du main.c, en laissant le choix à l'utilisateur des matrices qu'il veut testes, ainsi que la méthode à utiliser pour la résolution. Les différents choix sont regroupés dans un switch.
 
 
 
 \section{Présentation des matrices test au dos de la feuille}
-\label{sec:orga16caa4}
+\label{sec:orgdb846fc}
 
-Nous ne mettrons pas toutes les matrices test, mais vous pouvez les retrouver \href{matricetest.c}{ici}.
-
-
-De plus, les matrices test sont compatibles seulement avec Gauss. En effet, seule la matrice Km\textsubscript{carré} avec un p petit (<= 0.3) sera dominantes.
-
-Pour tester les matrices test, il suffit de donner à A une taille n*n, puis de la remplir grâce au programme de la matrice test voulue. Le temps d'exécution de la résolution sera ainsi donné, avec la solution X.
+Nous ne mettrons le code des matrices test, mais vous pouvez le retrouver \href{matricetest.c}{ici}.
 
 
+De plus, la plupart des matrices test sont compatibles uniquement avec la méthode de résolution de Gauss. En effet, seule les matrices Km\textsubscript{carré}, Bord ainsi que Lehmer seront diagonales dominantes.
+
+Pour tester les différentes matrices proposées, il suffit de donner à A une taille \(n^n\), puis de la remplir grâce au programme de la matrice voulue. Le temps d'exécution de la résolution sera ainsi donné, avec la solution X. De plus, si la méthode choisie est la résolution par Jacobi, le nombre d'itération sera également affiché.
 
 
 
 
 
-\section{{\bfseries\sffamily TODO} Commentaires des jeux d'essais à partir de données relatives [0/4]}
-\label{sec:org53dac62}
-Donc pour résumer:
--\% d'écart = diff entre B' calculé et B donné
--font° d'erreur = norme de Ax - b
--vitesse de convergence = temps d'execution?
-
-complexité pratique= O(n)
-
-vitesse de convergence = nombre d'itération (que sur jacobi)
 
 
-\subsection{{\bfseries\sffamily NEXT} Pourcentage d'écart (précision)}
-\label{sec:org4c4637c}
 
-\subsection{{\bfseries\sffamily TODO} Calcul de fonction d'erreurs}
-\label{sec:org5ad762f}
+\section{Commentaires des jeux d'essais à partir de données relatives}
+\label{sec:orgd092751}
 
-\subsection{{\bfseries\sffamily TODO} Vitesse de convergence}
-\label{sec:org2805d4e}
 
-\subsection{{\bfseries\sffamily TODO} Complexité pratique (plus qu'à mettre)}
-\label{sec:orga036378}
+Les jeux d'essais de données relatives proposés sont uniquement les cas où la matrice A est diagonale dominantes. Car, pour faire une comparaison, il faut obligatoirement pouvoir utiliser la méthode de Jacobi (nous avons quand même fait un test avec la matrice ding-dong et la méthode de Gauss).
+Pour effectuer ces différents tests, nous avons choisi de faire un nouveau cas au switch, où l'on pourrait choisir :
+
+\begin{enumerate}
+\item La matrice A voulu
+\item La matrice B voulu également
+\item Le nombre de matrice à tester
+\item La taille des matrices résoudre
+\end{enumerate}
+
+
+
+
+
+De plus, l'affichage dans le terminal indique :
+\begin{enumerate}
+\item Le temps nécessaire pour les 2 méthodes
+\item La stabilité
+\item La fonction d'erreur
+\item La vitesse de convergence (le nombre d'itération de Jacobi)
+\end{enumerate}
+
+
+
+Par exemple, ici, avec :
+\begin{itemize}
+\item 1000 matrices carrées
+\item de taille 100
+\item A remplie aléatoirement avec des diagonales dominantes
+\item B remplie aléatoirement avec des nombre entre -100 et 100
+
+Nous avons les résultats suivants :
+\end{itemize}
+
+
+\begin{center}
+\includegraphics[width=.9\linewidth]{resultattestjacogauss.png}
+\end{center}
+
+
+Vous pouvez également réaliser vos propres test en faisant tapant "p" dés le début du programme !
+
+Grâce à ce test, nous pouvons en déduire plusieurs choses :
+
+
+\subsection{Précision (pourcentage d'écart)}
+\label{sec:orgb099977}
+La précision de Jacobi est dû uniquement au \(\epsilon\) choisi. En effet, Jacobi s'arrête seulement lorsque la solution est proche de la solution exacte avec une marge de plus ou moins \(\epsilon\) (si la matrice A est bien diagonale dominante).
+Pour Gauss, les résultats sont principalement exactes. En effet, Gauss permet de donner une précision avec une stabilité nul pour la plupart des cas.
+Cependant, on peut citer la matrice remplie avec la méthode ding-dong, qui donne des résultats avec une précision peu fiable, même si la taille de la matrice est petite (par exemple 25). 
+
+
+\subsection{Calcul de fonction d'erreurs}
+\label{sec:org5d25491}
+
+Pour la fonction d'erreur, il faut calculer la norme de \(AX - B\). Nous l'avons donc ajouté dans notre programme (tous n'est pas détaillé, mais se sont les 3 lignes principales):
+
+\begin{verbatim}
+
+X = multiplicationMatrice(*A, *X);
+temporaire = soustractino(*X, *B);
+ErreurJaco += Norme(temporaire);
+
+\end{verbatim}
+
+\subsection{Vitesse de convergence}
+\label{sec:org1d0e6be}
+
+Pour la vitesse de convergence, seul Jacobi sera traitée. En effet, Jacobi doit effectuer un nombre d'itération qui n'est pas défini avant le début du programme. Sa vitesse est donc affichée dans le terminal à la fin du programme.
+
+
+\subsection{Complexité pratique}
+\label{sec:orgddc74f6}
+
+Dans notre algorithme, la méthode de Jacobi est d'une complexité de l'ordre de \(O(n^2)\), contrairement à Gauss qui nous donne une complexité de l'ordre de \(O(n^3)\).
+
+
 
 
 \section{Conclusion sur les méthodes}
-\label{sec:org4834877}
+\label{sec:orgadc0b99}
 
 \subsection{Comparaison}
-\label{sec:org8b212be}
-Comme on peut le voir sur les différents jeux d'essais, Jacobi est plus efficace que Gauss, car sa complixité est \(3n^2+2n\) par itération, et donc d'ordre \(O(n^2)\), tandis que Gauss a une complixité égale à \(2\frac{n^3}{3}\), car \(\frac{n^2}{2}\) pour la division, et \(\frac{n^3}{3}\) pour la multiplication.
+\label{sec:org7a65f10}
+Comme on peut le voir sur les différents jeux d'essais, Jacobi est plus efficace que Gauss, car sa complixité est \(3n^2+2n\) par itération, et donc d'ordre \(O(n^2)\), tandis que Gauss a une complixité égale à \(2\frac{n^3}{3}\) (\(\frac{n^2}{2}\) pour la division, et \(\frac{n^3}{3}\) pour la multiplication).
 Gauss a donc une complexité d'ordre \(O(n^3)\).
-Malgré tout, il existe des cas où la méthode de Jacobi prendra plus de temps : Il suffit de donner un \(\epsilon\) trés petit, et donc d'augmenter la précision du résultat voulu, pour entraîner un nombre d'itération trop conséquent pour effectuer le calcul.
+Malgré tout, il existe des cas où la méthode de Jacobi prendra plus de temps : Il suffit de donner un \(\epsilon\) trés petit, et donc d'augmenter la précision du résultat voulu, pour entraîner un nombre d'itération trop conséquent pour effectuer un temps de calcul inférieur à celui de Gauss.
 
 
-\subsection{{\bfseries\sffamily TODO} Cadre d'utilisation}
-\label{sec:orgfb02acb}
+Les méthodes de Jacobi et de Gauss n'ont pas la même utilité : en effet, Jacobi est (en général) plus rapide que Gauss, mais donne une solution approchée en fonction du \(\epsilon\) choisi.
 
 
+\subsection{Cadre d'utilisation}
+\label{sec:orge281022}
 
+Nous pouvons donc distinguer deux cas :
 
-
-\subsection{{\bfseries\sffamily TODO} Stabilité}
-\label{sec:orgb1d1ab6}
+\begin{enumerate}
+\item Nous voulons avoir une solution rapidement, mais la précision est négligeable à \(\epsilon\) près. Nous pouvons donc utiliser la méthode de Jacobi, qui s'effectuera plus rapidement que la méthode de Gauss.
+\item Nous voulons une solution exacte et sans approximation : La méthode de Gauss s'impose d'elle-même. En revanche, le temps pour résoudre le système sera plus long que la méthode de Jacobi, mais la solution qui sera donnée sera exacte, et non une approximation à \(\epsilon\) près. Mais Gauss ne peut pas toujours être utilisé pour une précision de 100\%, comme avec la matrice ding-dong.
+\end{enumerate}
 \end{document}
