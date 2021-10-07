@@ -1,22 +1,16 @@
-* README
-** Pour compiler le programme :
-Il suffit d'utiliser la commande 'make' ce qui va créer l’exécutable main.
 
-** Pour exécuter le programme :
++Title:README
+
+
+
+** Pour lancer le programme (ce fait en 2 étapes)
+*** Pour compiler le programme :
+Il suffit d'utiliser la commande 'make' dans le répertoire où se trouvent les documents, ce qui va créer l’exécutable main.
+
+*** Pour exécuter le programme :
 Il suffit d’exécuter exécutable 'main' créé par la commande 'make'. Pour cela la commande './main' est à votre disposition.
 
 ** Pour plus d'information sur ce programme :
 N'hésitez pas à lire le CompteRendu.pdf qui explique le code.
 
 
-*** useless :
-
-Finir le boulot !! [2/5]
-Présenter les programmes
-Le commenter
-Test les matrices [0/2]:
-Test les matricesau dos de la feuille
-Tester pour des matrices de grandes tailles
-Tester pour des matrices avec + de 70% de 0
-Résultats modifiés ?
-Mettre la complexité
