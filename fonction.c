@@ -347,8 +347,12 @@ matrice *Jacobi(matrice *A, matrice *B, float Eps, int nombremaxinte, int *compt
   while ((erreur > Eps) && (nombremaxinte > *compteur))
   {
     // nouvelle valeur de x selon la formule
-    x = multiplicationMatrice(
-        *D, *additionMatrice(*(multiplicationMatrice(*N, *x)), *B));
+    matrice *tmp = multiplicationMatrice(*N, *x);
+    matrice *tmp2 = additionMatrice(*tmp, *B);
+    x = multiplicationMatrice(*D, *tmp2);
+
+    destroyMatrice(tmp);
+    destroyMatrice(tmp2);
 
     // TODO: retirer cette ligne qui annule juste la boucle infini
     erreur = Norme(soustractino(*multiplicationMatrice(*A, *x), *B));
